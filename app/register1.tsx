@@ -4,7 +4,7 @@ import { Link } from 'expo-router';
 
 const PlaceholderImage = require('../assets/logo/nexaspay.logo.png');
 
-export default function LoginScreen() {
+export default function Register1() {
   return (
     <KeyboardAvoidingView
       style={{
@@ -20,10 +20,22 @@ export default function LoginScreen() {
           style={{ width: 150, height: 150 }}
           resizeMode="contain"
         />
+        <Text style={{ color: '#fff', fontWeight: 'bold',  fontSize: 40 , padding:50}}>Criar Conta</Text>
       </View>
 
       <View style={{ flex: 1, justifyContent: 'flex-start', width: '100%' }}>
         <Text style={{ color: '#fff', marginBottom: 5, fontWeight: 'medium',  fontSize: 16 }}>Email</Text>
+        <TextInput
+          placeholder="Email"
+          placeholderTextColor="#dbdbdb"
+          style={{
+            backgroundColor: colors.bgDark1,
+            padding: 15,
+            borderRadius: 10,
+            color: '#fff',
+            marginBottom: 15,
+          }}
+        /><Text style={{ color: '#fff', marginBottom: 5, fontWeight: 'medium',  fontSize: 16 }}>Email</Text>
         <TextInput
           placeholder="Email"
           placeholderTextColor="#dbdbdb"
