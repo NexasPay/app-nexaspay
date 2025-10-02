@@ -1,27 +1,3 @@
 @import 'tailwindcss';
 @import 'nativewind/theme';
 
-
-:root {
-  --bg-dark-1: #2C2F33;  
-  --bg-dark-2: #333E4B;  
-  --bg-dark-3: #3D5675;  
-  --bg-dark-4: #0E1114;  
-  --bg-dark-5: #0A1B31; 
-
-  
-  --color-primary: #0673F6;
-  --color-secondary: #2670CA;
-  --color-third: #3867A0;
-
-  --light-bg-1: #DADBDF;
-  --light-bg-2: #79ACEA;
-
-
-  --highlight-1: #05EFF5;
-  --highlight-2: #F0C348;
-  --highlight-3: #F68906;
-  --highlight-4: #5E06F6;
-
-
-}
