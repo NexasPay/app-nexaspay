@@ -60,7 +60,7 @@ export default function LoginScreen() {
           <Text style={{ color: '#fff', fontWeight: 'bold' }}>Login</Text>
         </TouchableOpacity>
 
-        <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 20 }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 40 }}>
           <Text style={{ color: '#fff', marginRight: 5 }}>Não possui login?</Text>
           <TouchableOpacity>
                <Link href="/register1" >

@@ -3,7 +3,7 @@ import { colors } from '../utils/colors';
 import { Link } from 'expo-router';
 
 const PlaceholderImage = require('../assets/logo/nexaspay.logo.png');
-const GrowBar = require('../assets/growbar1.png')
+const GrowBar = require('../assets/growbar2.png')
 export default function Register1() {
   return (
     <KeyboardAvoidingView
@@ -25,9 +25,9 @@ export default function Register1() {
       </View>
 
       <View style={{ flex: 1, justifyContent: 'flex-start', width: '100%' }}>
-        <Text style={{ color: '#fff', marginBottom: 5, fontWeight: 'medium',  fontSize: 16 }}>Nome Completo</Text>
+        <Text style={{ color: '#fff', marginBottom: 5, fontWeight: 'medium',  fontSize: 16 }}>Email</Text>
         <TextInput
-          placeholder="Digite seu nome completo"
+          placeholder="Digite seu email"
           placeholderTextColor="#dbdbdb"
           style={{
             backgroundColor: colors.bgDark1,
@@ -36,9 +36,9 @@ export default function Register1() {
             color: '#fff',
             marginBottom: 15,
           }}
-        /><Text style={{ color: '#fff', marginBottom: 5, fontWeight: 'medium',  fontSize: 16 }}>CPF</Text>
+        /><Text style={{ color: '#fff', marginBottom: 5, fontWeight: 'medium',  fontSize: 16 }}>Senha</Text>
         <TextInput
-          placeholder="Digite seu CPF"
+          placeholder="Digite sua senha"
           placeholderTextColor="#dbdbdb"
           style={{
             backgroundColor: colors.bgDark1,
@@ -48,9 +48,9 @@ export default function Register1() {
             marginBottom: 15,
           }}
         />
-  <Text style={{ color: '#fff', marginBottom: 5, fontWeight: 'medium',fontSize: 16  }}>Data de nascimento</Text>
+  <Text style={{ color: '#fff', marginBottom: 5, fontWeight: 'medium',fontSize: 16  }}>Confirmar sua senha</Text>
         <TextInput
-          placeholder="DD/MM/AAAA"
+          placeholder="Confirmar sua senha"
           placeholderTextColor="#dbdbdb"
           style={{
             backgroundColor: colors.bgDark1,
@@ -62,7 +62,7 @@ export default function Register1() {
           secureTextEntry
         />
 
-<Link href="/register2" asChild>
+<Link href="/register3" asChild>
   <TouchableOpacity
     style={{
       backgroundColor: colors.primary,
@@ -75,16 +75,19 @@ export default function Register1() {
   </TouchableOpacity>
 </Link>
 
-<View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 50 }}>
-  <Text style={{ color: '#fff', marginRight: 5 }}>Já possui conta?</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 50 }}>
+          <Text style={{ color: '#fff', marginRight: 5 }}>Já possui conta?</Text>
+          <TouchableOpacity>
          <Link href="/" asChild>
   <TouchableOpacity>
     <Text style={{ color: '#4399FF', fontWeight: 'bold' }}>Faça login</Text>
   </TouchableOpacity>
 </Link>
                
-</View>
-
+            
+          </TouchableOpacity>
+          
+        </View>
         
       </View>
      </ScrollView>

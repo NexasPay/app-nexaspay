@@ -1,8 +1,15 @@
 {
   "expo": {
-    "name": "my-expo-app",
-    "slug": "my-expo-app",
+    "name": "nexaspay",
+    "slug": "nexaspay",
+    "scheme": "nexaspay",
     "version": "1.0.0",
+    "extra": {
+      "router":{
+        "origin":false
+      }
+    },
+    
 
     "web": {
       "favicon": "./assets/favicon.png"
