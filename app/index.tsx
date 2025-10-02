@@ -1,18 +1,18 @@
-import { Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
+import { Text, View, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, ScrollView  } from 'react-native';
 import { colors } from '../utils/colors';
 
 const PlaceholderImage = require('../assets/logo/nexaspay.logo.png');
 
 export default function LoginScreen() {
   return (
-    <View
+    <KeyboardAvoidingView
       style={{
         flex: 1,
         backgroundColor: colors.bgDark4,
         paddingHorizontal: 20,
       }}
     >
-    
+     <ScrollView contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 20 }}>
       <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center', paddingTop: 40 }}>
         <Image
           source={PlaceholderImage}
@@ -66,6 +66,7 @@ export default function LoginScreen() {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+     </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
