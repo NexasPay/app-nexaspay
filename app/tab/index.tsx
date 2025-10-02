@@ -1,13 +1,14 @@
-import { Text, View } from 'react-native';
+import { Text, View, Image } from 'react-native';
 
+
+const PlaceholderImage = require('../../assets/logo/nexaspay.logo.png');
 export default function LoginScreen() {
   return (
     <View className="flex-1 items-center justify-center bg-zinc-100">
-      <Text className="text-3xl font-extrabold text-purple-700">
-        Meu App com NativeWind e Expo Router!
-        
-      </Text>
-      <Text className='text-2xl'>TESTE</Text>
+<View>
+  <Image source={PlaceholderImage}/>
+</View>
+    
     </View>
   );
 }
