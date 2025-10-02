@@ -17,4 +17,6 @@ export const colors = {
   highlight2: '#F0C348',
   highlight3: '#F68906',
   highlight4: '#5E06F6',
+
+  textinput: 'CFCFCF'
 };
