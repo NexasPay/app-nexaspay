@@ -58,7 +58,9 @@ export default function Register1() {
               borderRadius: 10,
               color: '#fff',
               marginBottom: 15,
+
             }}
+             keyboardType="numeric"
           />
 
           <Text style={{ color: '#fff', marginBottom: 5, fontWeight: 'medium', fontSize: 16 }}>Sua foto de perfil</Text>
@@ -104,7 +106,7 @@ export default function Register1() {
             </TouchableOpacity>
           </Link>
 
-          {/* Link para login */}
+       
           <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 20 }}>
             <Text style={{ color: '#fff', marginRight: 5 }}>Já possui conta?</Text>
             <Link href="/" asChild>
