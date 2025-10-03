@@ -46,7 +46,9 @@ export default function Register1() {
             borderRadius: 10,
             color: '#fff',
             marginBottom: 15,
+            
           }}
+              secureTextEntry
         />
   <Text style={{ color: '#fff', marginBottom: 5, fontWeight: 'medium',fontSize: 16  }}>Confirmar sua senha</Text>
         <TextInput

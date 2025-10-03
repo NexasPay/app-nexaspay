@@ -40,6 +40,7 @@ export default function Register1() {
         <TextInput
           placeholder="Digite seu CPF"
           placeholderTextColor="#dbdbdb"
+           keyboardType="numeric"
           style={{
             backgroundColor: colors.bgDark1,
             padding: 15,
@@ -52,6 +53,7 @@ export default function Register1() {
         <TextInput
           placeholder="DD/MM/AAAA"
           placeholderTextColor="#dbdbdb"
+            keyboardType="numeric" 
           style={{
             backgroundColor: colors.bgDark1,
             padding: 15,
@@ -59,7 +61,7 @@ export default function Register1() {
             color: '#fff',
             marginBottom: 20,
           }}
-          secureTextEntry
+        
         />
 
 <Link href="/register2" asChild>
