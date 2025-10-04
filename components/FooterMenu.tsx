@@ -1,62 +1,104 @@
 import React from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Platform, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Link } from "expo-router";
-import { navigationItems } from "../utils/navigationItems";
+import { useRouter } from "expo-router";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import homeicon from "../assets/icons/home-icon.png";
+import walltericon from "../assets/icons/Crypto-Wallet.png"
+import nexasia from "../assets/icons/nexas-ia.png"
+import optionsicon from "../assets/icons/options-icon.png"
+import search from "../assets/icons/search-icon.png"
 
-const COLORS = {
-  bg: "#141C27",
-  border: "#1E293B",
-  active: "#4DA6FF",
-  text: "#E9EEF7",
-  textDim: "#9AA5B5",
+import { colors } from '../utils/colors';
+type FooterMenuProps = {
+  active?: "home" | "carteiras" | "nexasai" | "opcoes";
 };
 
-export default function FooterMenu({ active }: { active?: string }) {
+export default function FooterMenu({ active = "home" }: FooterMenuProps) {
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
+  const bottomPad = Math.max(insets.bottom, Platform.OS === "android" ? 12 : 8);
+
+ const Item = ({
+  label,
+  icon,
+  route,
+  isActive,
+  image,
+}: {
+  label?: string;
+  icon?: keyof typeof Ionicons.glyphMap;
+  route: string;
+  image?: any;
+  isActive?: boolean;
+}) => {
+  const isSearch = image === search; // identificar se é o search icon
+
   return (
-    <View style={styles.container}>
-      {navigationItems.map((item) => {
-        const isActive = active === item.key;
-        return (
-          <Link key={item.key} href={item.route} asChild>
-            <Pressable style={[styles.item, isActive && styles.itemActive]}>
-              <Ionicons
-                name={item.icon as any}
-                size={22}
-                color={isActive ? COLORS.active : COLORS.text}
-              />
-              <Text
-                style={[
-                  styles.label,
-                  { color: isActive ? COLORS.active : COLORS.textDim },
-                ]}
-              >
-                {item.label}
-              </Text>
-            </Pressable>
-          </Link>
-        );
-      })}
+    <TouchableOpacity style={styles.item} onPress={() => router.push(route)}>
+      {image ? (
+        isSearch ? (
+          <View style={styles.searchCircle}>
+            <Image
+              source={image}
+              style={{ width: 24, height: 24, tintColor: '#fff' }} // ícone branco dentro da bolinha azul
+              resizeMode="contain"
+            />
+          </View>
+        ) : (
+          <Image
+            source={image}
+            style={{ width: 22, height: 22, tintColor: colors.iconsFooter }}
+            resizeMode="contain"
+          />
+        )
+      ) : (
+        <Ionicons name={icon!} size={22} color={colors.iconsFooter} />
+      )}
+      {label && <Text style={[styles.label, isActive && styles.activeLabel]}>{label}</Text>}
+    </TouchableOpacity>
+  );
+};
+
+
+  return (
+    <View style={[styles.wrap, { paddingBottom: bottomPad }]}>
+      <View style={styles.container}>
+       <Item label="Home" image={homeicon} route="/home"  />
+        <Item label="Carteiras" image={walltericon} route="/home" />
+        <Item image={search}isActive={active === "carteiras"} route="/search"/>
+        <Item label="Nexas AI" image={nexasia} route="/nexasai" />
+        <Item label="Opções" image={optionsicon} route="/opcoes"  />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  wrap: {
+    backgroundColor: colors.bgDark1,
+    paddingTop: 8,
+    zIndex: 50,
+    elevation: 20,
+
+
+  },
   container: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
     flexDirection: "row",
     justifyContent: "space-around",
-    backgroundColor: COLORS.bg,
-    borderTopWidth: 1,
-    borderColor: COLORS.border,
-    paddingVertical: 10,
-    zIndex: 100, // fica por cima de overlays do dev
-    elevation: 20,
+    paddingHorizontal: 8,
   },
-  item: { alignItems: "center" },
-  itemActive: {},
-  label: { fontSize: 11, marginTop: 2, fontWeight: "600" },
+  item: { flex: 1, alignItems: "center", gap: 4 },
+  label: { fontSize: 12,fontWeight:"600", color: colors.iconsFooter },
+  activeLabel: { color: colors.iconsFooter, fontWeight: "600" },
+  searchCircle: {
+  backgroundColor: colors.primary, 
+  borderRadius: 20,           
+  width: 40,
+  height: 40,
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginBottom: 4,           
+},
+
 });
