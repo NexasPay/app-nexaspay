@@ -12,7 +12,7 @@ import search from "../assets/icons/search-icon.png"
 import { colors } from '../utils/colors';
 type FooterMenuProps = {
   active?: "home" | "carteiras" | "nexasai" | "opcoes";
-};
+}
 
 export default function FooterMenu({ active = "home" }: FooterMenuProps) {
   const router = useRouter();
