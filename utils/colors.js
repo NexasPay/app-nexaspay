@@ -18,5 +18,7 @@ export const colors = {
   highlight3: '#F68906',
   highlight4: '#5E06F6',
 
-  textinput: 'CFCFCF'
+  iconsFooter: '#BDBFC5',
+
+  textinput: '#CFCFCF'
 };
