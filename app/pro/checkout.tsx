@@ -20,7 +20,7 @@ export default function CheckoutPro() {
 
   return (
     <View style={styles.screen}>
-      <ScrollView contentContainerStyle={{ padding: 20, paddingBottom: 40 }}>
+      <ScrollView contentContainerStyle={{ padding: 20 }}>
         {/* Header */}
         <View style={styles.header}>
           <Pressable onPress={() => router.back()} style={styles.backBtn} android_ripple={{ color: "rgba(255,255,255,0.08)", radius: 20 }}>
@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: colors.bgDark4,
+    paddingTop: 40,
   },
   header: {
     flexDirection: "row",
