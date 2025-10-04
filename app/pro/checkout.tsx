@@ -9,8 +9,6 @@ export default function CheckoutPro() {
   const router = useRouter();
 
   const handlePurchase = () => {
-    // Aqui entra sua API de pagamento no futuro (Stripe/MercadoPago).
-    // Por enquanto, simulamos:
     Alert.alert(
       "Compra simulada",
       "Obrigado! Sua assinatura Nexas AI Pro foi ativada (modo teste).",
@@ -88,7 +86,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 16,
+    marginBottom: 11,
   },
   backBtn: {
     width: 42,
