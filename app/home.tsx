@@ -9,8 +9,17 @@ import PromoGrid from "../components/PromoGrid";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 const PlaceholderImage = require('../assets/perfil-images/kina-image.png');
 
+
+const getHours = () => {
+  const currentHour = new Date().getHours();
+  if (currentHour < 12) return "Bom dia!";
+  if (currentHour < 18) return "Boa tarde!";
+  return "Boa noite!";
+}
+
 export default function Home() {
   const insets = useSafeAreaInsets();
+  const greeting = getHours();
 
   return (
     <View style={styles.screen}>
@@ -29,7 +38,7 @@ export default function Home() {
               style={styles.avatar}
             />
             <View>
-              <Text style={styles.hello}>Bom dia!</Text>
+              <Text style={styles.hello}>{greeting}</Text>
               <Text style={styles.username}>Usuário</Text>
             </View>
           </View>
