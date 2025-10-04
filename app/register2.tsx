@@ -4,7 +4,7 @@ import { Link } from 'expo-router';
 
 const PlaceholderImage = require('../assets/logo/nexaspay.logo.png');
 const GrowBar = require('../assets/growbar2.png')
-export default function Register1() {
+export default function Register2() {
   return (
     <KeyboardAvoidingView
       style={{
