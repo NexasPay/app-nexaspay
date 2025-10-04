@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import FooterMenu from "../components/FooterMenu";
 import BalanceCard from "../components/BalanceCard";
@@ -12,6 +12,7 @@ import {
   useFonts,
   Roboto_400Regular,
 } from "@expo-google-fonts/roboto";
+import { router } from "expo-router";
 
 const PlaceholderImage = require("../assets/perfil-images/kina-image.png");
 
@@ -57,9 +58,12 @@ export default function Home() {
           </View>
         </View>
 
-        {/* Saldo */}
-        <BalanceCard />
-
+          <Pressable
+          onPress={() => router.push("/extract")} // 👈 altera o caminho aqui
+          style={({ pressed }) => [{ opacity: pressed ? 0.9 : 1 }]}
+        >
+          <BalanceCard />
+        </Pressable>
         {/* Quick actions */}
         <View style={{ height: 10 }} />
         <QuickActions />
