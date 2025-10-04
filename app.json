@@ -10,27 +10,29 @@
       }
     },
     "web": {
-      "favicon": null
+      "favicon": "./assets/icons/nexas-ia.png"
     },
     "experiments": {
       "tsconfigPaths": true
     },
-    "plugins": [
-      "expo-font"
-    ],
+    "plugins": ["expo-font"],
     "orientation": "portrait",
     "userInterfaceStyle": "light",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": null,
+        "foregroundImage": "./assets/logo/logon.png",
         "backgroundColor": "#ffffff"
       }
+    },
+    "icon": "./assets/logo/nexaspay_logo.png",
+    "splash": {
+      "image": "./assets/logo/nexaspay_logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
     }
   }
 }
