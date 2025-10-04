@@ -6,6 +6,9 @@ import BalanceCard from "../components/BalanceCard";
 import QuickActions from "../components/QuickActions";
 import NewsCard from "../components/NewsCard";
 import PromoGrid from "../components/PromoGrid";
+
+
+
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 const PlaceholderImage = require('../assets/perfil-images/kina-image.png');
 
@@ -38,7 +41,9 @@ export default function Home() {
               style={styles.avatar}
             />
             <View>
-              <Text style={styles.hello}>{greeting}</Text>
+              <Text
+               
+              style={styles.hello}>{greeting}</Text>
               <Text style={styles.username}>Usuário</Text>
             </View>
           </View>

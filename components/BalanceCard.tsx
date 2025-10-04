@@ -3,23 +3,38 @@ import { View, Text, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 
+import {
+  useFonts,
+  ChivoMono_700Bold,
+} from "@expo-google-fonts/chivo-mono";
+
 export default function BalanceCard() {
+  const [fontsLoaded] = useFonts({
+    ChivoMono_700Bold,
+  });
+
+  if (!fontsLoaded) return null;
+
   return (
     <LinearGradient
-      colors={["#22B7F4", "#49C6F2", "#34A1E2"]}
+      colors={["#05EFF5", "#79ACEA", "#0673F6"]}
       start={{ x: 0.05, y: 0.2 }}
-      end={{ x: 1, y: 0.9 }}
       style={styles.card}
     >
       <View style={styles.rowTop}>
         <Text style={styles.badge}>Ver saldo</Text>
-        <Ionicons name="chevron-forward" size={14} color="#EAF6FF" />
+        <Ionicons name="chevron-forward" size={14} color="#fff" />
       </View>
 
       <View style={{ height: 8 }} />
-      <Text style={styles.amount}>R$ 0 . 000 , 00</Text>
+      <Text style={styles.amount}>R$ 0.000,00</Text>
 
-      <Ionicons name="eye-off-outline" size={22} color="#F5FBFF" style={styles.eye} />
+      <Ionicons
+        name="eye-off-outline"
+        size={22}
+        color="#F5FBFF"
+        style={styles.eye}
+      />
     </LinearGradient>
   );
 }
@@ -37,7 +52,12 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   rowTop: { flexDirection: "row", alignItems: "center", gap: 6 },
-  badge: { color: "#EAF6FF", fontSize: 13, fontWeight: "600" },
-  amount: { color: "#FFFFFF", fontSize: 28, fontWeight: "800", letterSpacing: 1.5 },
+  badge: { color: "#FFFF", fontSize: 13, fontWeight: "600" },
+  amount: {
+    color: "#FFFFFF",
+    fontSize: 34,
+    fontFamily: "ChivoMono_700Bold",
+   
+  },
   eye: { position: "absolute", right: 16, bottom: 16 },
 });
