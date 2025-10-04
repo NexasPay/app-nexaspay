@@ -6,7 +6,7 @@ import { colors } from "../utils/colors";
 type Action = { label: string; icon: keyof typeof Ionicons.glyphMap; onPress?: () => void, route:string };
 
 const actions: Action[] = [
-  { label: "Transações", icon: "card-outline" ,route: "/transacoes"},
+  { label: "Transações", icon: "card-outline" ,route: "/transaction"},
   { label: "Nexas Score", icon: "analytics-outline",route: "/nexascore" },
   { label: "Pix", icon: "cash-outline", route: "/pix" },
 ]
