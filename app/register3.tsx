@@ -5,7 +5,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
 
-const PlaceholderImage = require('../assets/logo/nexaspay.logo.png');
+const PlaceholderImage = require('../assets/logo/nexaspay_logo.png');
 const GrowBar = require('../assets/growbar3.png');
 
 export default function Register1() {

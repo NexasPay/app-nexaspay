@@ -2,7 +2,7 @@ import { Text, View, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, S
 import { colors } from '../utils/colors';
 import { Link, useRouter } from 'expo-router';
 
-const PlaceholderImage = require('../assets/logo/nexaspay.logo.png');
+const PlaceholderImage = require('../assets/logo/nexaspay_logo.png');
 
 export default function LoginScreen() {
   const router = useRouter(); // 👈 hook do expo-router
