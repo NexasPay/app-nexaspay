@@ -10,84 +10,171 @@ import {
   Easing,
   Image,
   TextInput,
+  KeyboardAvoidingView,
+  Platform,
+  ActivityIndicator,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { usePathname, useRouter } from "expo-router";
+
 import { navigationItems } from "../utils/navigationItems";
 import { colors } from "../utils/colors";
+import { sendMessageToAgent, ChatMessage } from "../utils/api";
 
 const BrandLogo = require("../assets/logo/logon.png");
 
 type SheetKey = "conheca" | "sobre" | "pro" | null;
+type AgentAction = { type: "NONE" | "NAVIGATE" | "SHOW_SHEET"; route?: string; params?: any };
 
 export default function NexasAI() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
+
+  // UI state
   const [menuOpen, setMenuOpen] = useState(false);
   const [sheet, setSheet] = useState<SheetKey>(null);
-  const CHAT_H = 56;
+
+  // Chat state
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  // refs p/ scroll e input
+  const scrollRef = useRef<ScrollView>(null);
+
+  // rola pro fim sempre que tiver novas mensagens
+  useEffect(() => {
+    const t = setTimeout(() => {
+      scrollRef.current?.scrollToEnd({ animated: true });
+    }, 70);
+    return () => clearTimeout(t);
+  }, [messages, loading]);
+
+  const scrollToEnd = () => scrollRef.current?.scrollToEnd({ animated: true });
+
+  const handleSend = async () => {
+    const text = input.trim();
+    if (!text || loading) return;
+
+    setInput("");
+    setMessages((prev) => [...prev, { from: "user", text }]);
+    setLoading(true);
+
+    try {
+      const res: { reply?: string; action?: AgentAction } = await sendMessageToAgent({
+        text,
+        history: [...messages, { from: "user", text }],
+        user: { id: "local", name: "Usuário" },
+      });
+
+      if (res?.reply) {
+        setMessages((prev) => [...prev, { from: "ai", text: res.reply! }]);
+      }
+      if (res?.action?.type === "NAVIGATE" && res.action.route) {
+        router.push(res.action.route as any);
+      }
+    } catch (e) {
+      setMessages((prev) => [...prev, { from: "ai", text: "❌ Erro ao falar com a Nexas AI." }]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <View style={styles.screen}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingHorizontal: 16,
-          paddingTop: insets.top + 8,
-          paddingBottom: CHAT_H + 28 + insets.bottom,
-        }}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+        style={{ flex: 1 }}
       >
-        {/* Top bar */}
-        <View style={styles.topBar}>
-          <ProPill onPress={() => setSheet("pro")} />
-          <Pressable
-            onPress={() => setMenuOpen((v) => !v)}
-            android_ripple={{ color: "rgba(255,255,255,0.08)", radius: 26 }}
-            style={({ pressed }) => [
-              styles.hambtn,
-              pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] },
-            ]}
-          >
-            <Ionicons name="menu-outline" size={26} color={colors.lightBg1} />
-          </Pressable>
-        </View>
+        <ScrollView
+          ref={scrollRef}
+          keyboardShouldPersistTaps="handled"
+          contentInsetAdjustmentBehavior="always"
+          showsVerticalScrollIndicator={false}
+          onContentSizeChange={scrollToEnd}
+          contentContainerStyle={{
+            paddingHorizontal: 16,
+            paddingTop: insets.top + 10,
+            // padding extra para não ficar atrás do ChatBar
+            paddingBottom: 120 + insets.bottom,
+          }}
+        >
+          {/* Top bar */}
+          <View style={styles.topBar}>
+            <ProPill onPress={() => setSheet("pro")} />
+            <Pressable
+              onPress={() => setMenuOpen((v) => !v)}
+              android_ripple={{ color: "rgba(255,255,255,0.08)", radius: 26 }}
+              style={({ pressed }) => [
+                styles.hambtn,
+                pressed && { opacity: 0.9, transform: [{ scale: 0.97 }] },
+              ]}
+            >
+              <Ionicons name="menu-outline" size={26} color={colors.lightBg1} />
+            </Pressable>
+          </View>
 
-        {/* Hero */}
-        <View style={styles.hero}>
-          <LogoBox />
-          <Text style={styles.heroWelcome}>Bem vindo ao</Text>
-          <Text style={styles.heroTitle}>Nexas AI</Text>
-        </View>
+          {/* Hero */}
+          <View style={styles.hero}>
+            <View style={styles.logoWrap}>
+              <Image source={BrandLogo} style={styles.logoImage} resizeMode="contain" />
+            </View>
+            <Text style={styles.heroWelcome}>Bem-vindo ao</Text>
+            <Text style={styles.heroTitle}>Nexas AI</Text>
+          </View>
 
-        {/* Grid – 2 cards */}
-        <View style={styles.gridRow}>
-          <InfoCard
-            title="Conheça o app"
-            subtitle="Saiba de tudo"
-            onPress={() => setSheet("conheca")}
-          />
-          <InfoCard
-            title="Sobre o Nexas AI"
-            subtitle="Descubra como opero"
-            onPress={() => setSheet("sobre")}
-          />
-        </View>
-      </ScrollView>
+          {/* Conversa */}
+          {messages.length > 0 && (
+            <View style={{ gap: 8, marginBottom: 14 }}>
+              {messages.map((m, i) => (
+                <View
+                  key={`${m.from}-${i}`}
+                  style={[
+                    styles.msgBubble,
+                    m.from === "user" ? styles.msgUser : styles.msgAI,
+                  ]}
+                >
+                  <Text style={{ color: m.from === "user" ? "#fff" : colors.lightBg1 }}>{m.text}</Text>
+                </View>
+              ))}
 
-      {/* Chat input fixo (sem o botão +) */}
-      <ChatBar insetsBottom={insets.bottom} />
+              {loading && (
+                <View style={[styles.msgBubble, styles.msgAI]}>
+                  <ActivityIndicator color={colors.primary} size="small" />
+                </View>
+              )}
+            </View>
+          )}
 
-      {/* Side menu (hamburger) */}
+          {/* Grid – 2 cards */}
+          <View style={styles.gridRow}>
+            <InfoCard title="Conheça o app" subtitle="Saiba de tudo" onPress={() => setSheet("conheca")} />
+            <InfoCard title="Sobre o Nexas AI" subtitle="Descubra como opero" onPress={() => setSheet("sobre")} />
+          </View>
+        </ScrollView>
+
+        {/* Chat input fixo */}
+        <ChatBar
+          input={input}
+          setInput={setInput}
+          loading={loading}
+          onSend={handleSend}
+          insetsBottom={insets.bottom}
+          onFocus={scrollToEnd}
+        />
+      </KeyboardAvoidingView>
+
+      {/* Menu sanduíche */}
       <SideMenuOverlay open={menuOpen} onClose={() => setMenuOpen(false)}>
         <SideMenuContent />
       </SideMenuOverlay>
 
       {/* Sheets */}
-      <BottomSheet
-        visible={sheet === "conheca"}
-        title="Conheça o app"
-        onClose={() => setSheet(null)}
-      >
+      <BottomSheet visible={sheet === "conheca"} title="Conheça o app" onClose={() => setSheet(null)}>
         <SheetSection title="Visão geral">
           <Feature text="Dashboard com saldo, notícias e atalhos" icon="home-outline" />
           <Feature text="Transações e Pix em poucos toques" icon="card-outline" />
@@ -99,85 +186,42 @@ export default function NexasAI() {
           <Feature text="Favoritos e widgets de ações" icon="star-outline" />
         </SheetSection>
 
-        <SheetSection title="Privacidade">
-          <Feature text="Seus dados cifrados em repouso e trânsito" icon="shield-checkmark-outline" />
-          <Feature text="Controle de permissões por recurso" icon="lock-closed-outline" />
-        </SheetSection>
-
         <SheetCTA
-          primary={{ label: "Abrir Carteiras", onPress: (router) => router.push("/carteiras") }}
-          secondary={{ label: "Ver opções", onPress: (router) => router.push("/opcoes") }}
+          primary={{ label: "Abrir Carteiras", onPress: (r) => r.push("/carteiras") }}
+          secondary={{ label: "Ver opções", onPress: (r) => r.push("/opcoes") }}
         />
       </BottomSheet>
 
-      {/* ====== SOBRE (agora com o mesmo visual do PRO) ====== */}
-      <BottomSheet
-        visible={sheet === "sobre"}
-        title="Sobre o Nexas AI"
-        onClose={() => setSheet(null)}
-      >
+      <BottomSheet visible={sheet === "sobre"} title="Sobre o Nexas AI" onClose={() => setSheet(null)}>
         <SheetSection title="Quem sou eu">
-          <Feature
-            text="Sou a inteligência artificial da NexasPay, criada para simplificar sua vida financeira com praticidade e segurança."
-            icon="sparkles-outline"
-          />
-          <Feature
-            text="Aprendo com o seu uso do app para entregar experiências e sugestões cada vez mais personalizadas."
-            icon="bulb-outline"
-          />
+          <Feature text="Sou a IA da NexasPay, criada para simplificar sua vida financeira." icon="sparkles-outline" />
+          <Feature text="Aprendo com o seu uso para oferecer experiências personalizadas." icon="bulb-outline" />
         </SheetSection>
 
         <SheetSection title="Como funciono">
-          <Feature
-            text="Analiso atividades, detecto padrões e transformo dados em insights fáceis de entender."
-            icon="analytics-outline"
-          />
-          <Feature
-            text="Envio alertas úteis para decisões no momento certo — sem excesso de notificações."
-            icon="notifications-outline"
-          />
+          <Feature text="Analiso suas atividades e transformo dados em insights claros." icon="analytics-outline" />
+          <Feature text="Envio alertas úteis no momento certo — sem spam." icon="notifications-outline" />
         </SheetSection>
-
-        <SheetSection title="Privacidade e controle">
-          <Feature
-            text="Não executo operações financeiras automaticamente. Você está sempre no comando."
-            icon="hand-left-outline"
-          />
-          <Feature
-            text="Seus dados são protegidos por criptografia e processados apenas com sua permissão."
-            icon="lock-closed-outline"
-          />
-        </SheetSection>
-        {/* Sem CTA aqui, mantendo apenas a explicação */}
       </BottomSheet>
 
-      <BottomSheet
-        visible={sheet === "pro"}
-        title="Nexas AI Pro"
-        onClose={() => setSheet(null)}
-      >
-        <SheetSection title="O que você ganha">
+      <BottomSheet visible={sheet === "pro"} title="Nexas AI Pro" onClose={() => setSheet(null)}>
+        <SheetSection title="Benefícios exclusivos">
           <Feature text="Insights avançados e previsões" icon="rocket-outline" />
-          <Feature text="Alertas inteligentes ilimitados" icon="flash-outline" />
+          <Feature text="Alertas ilimitados e personalizados" icon="flash-outline" />
           <Feature text="Relatórios PDF mensais" icon="document-text-outline" />
-          <Feature text="Prioridade no suporte" icon="headset-outline" />
-        </SheetSection>
-
-        <SheetSection title="Planos">
-          <Feature text="Mensal – cancele quando quiser" icon="calendar-outline" />
-          <Feature text="Desconto anual exclusivo" icon="pricetag-outline" />
+          <Feature text="Suporte prioritário" icon="headset-outline" />
         </SheetSection>
 
         <SheetCTA
-          primary={{ label: "Quero o Pro", onPress: (router) => router.push("/pro/checkout") }}
-          secondary={{ label: "Ver depois", onPress: () => setSheet(null) }}
+          primary={{ label: "Quero o Pro", onPress: (r) => r.push("/pro/checkout") }}
+          secondary={{ label: "Ver depois", onPress: (_r) => setSheet(null) }}
         />
       </BottomSheet>
     </View>
   );
 }
 
-/* ============ Side menu ============ */
+/* ===================== Side menu overlay ===================== */
 function SideMenuOverlay({
   open,
   onClose,
@@ -209,9 +253,7 @@ function SideMenuOverlay({
   return (
     <Animated.View style={[StyleSheet.absoluteFillObject, { zIndex: 30 }]}>
       <Pressable style={StyleSheet.absoluteFill} onPress={onClose}>
-        <Animated.View
-          style={[StyleSheet.absoluteFill, { backgroundColor: "rgba(0,0,0,0.35)", opacity: fade }]}
-        />
+        <Animated.View style={[StyleSheet.absoluteFill, { backgroundColor: "rgba(0,0,0,0.35)", opacity: fade }]} />
       </Pressable>
 
       <Animated.View
@@ -249,7 +291,7 @@ function SideMenuContent() {
             android_ripple={{ color: "rgba(255,255,255,0.08)", radius: 42 }}
           >
             <Ionicons
-              name={item.icon as any}
+              name={item.icon as keyof typeof Ionicons.glyphMap}
               size={22}
               color={isActive ? "#fff" : colors.lightBg1}
               style={{ marginBottom: 6 }}
@@ -284,7 +326,7 @@ const smStyles = StyleSheet.create({
   label: { fontSize: 11, fontWeight: "700" },
 });
 
-/* ============ BottomSheet base ============ */
+/* ===================== BottomSheet ===================== */
 function BottomSheet({
   visible,
   title,
@@ -367,7 +409,7 @@ const bsStyles = StyleSheet.create({
   },
 });
 
-/* ============ Elementos reutilizáveis ============ */
+/* ===================== Reutilizáveis ===================== */
 function SheetSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <View style={{ marginBottom: 14 }}>
@@ -377,7 +419,13 @@ function SheetSection({ title, children }: { title: string; children: React.Reac
   );
 }
 
-function Feature({ text, icon }: { text: string; icon: any }) {
+function Feature({
+  text,
+  icon,
+}: {
+  text: string;
+  icon: keyof typeof Ionicons.glyphMap;
+}) {
   return (
     <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 8 }}>
       <Ionicons name={icon} size={18} color={colors.primary} />
@@ -386,32 +434,29 @@ function Feature({ text, icon }: { text: string; icon: any }) {
   );
 }
 
+type RouterCb = (router: ReturnType<typeof useRouter>) => void;
+
 function SheetCTA({
   primary,
   secondary,
 }: {
-  primary: { label: string; onPress: (router: ReturnType<typeof useRouter>) => void };
-  secondary?: { label: string; onPress: (router: ReturnType<typeof useRouter>) => void };
+  primary: { label: string; onPress: RouterCb };
+  secondary?: { label: string; onPress: RouterCb };
 }) {
   const router = useRouter();
   return (
     <View style={{ flexDirection: "row", gap: 10, marginTop: 6 }}>
       <Pressable
-        style={({ pressed }) => [
-          ctaStyles.primary,
-          pressed && { opacity: 0.9, transform: [{ translateY: 1 }] },
-        ]}
-        onPress={() => primary.onPress(router as any)}
+        style={({ pressed }) => [ctaStyles.primary, pressed && { opacity: 0.9, transform: [{ translateY: 1 }] }]}
+        onPress={() => primary.onPress(router)}
       >
         <Text style={ctaStyles.primaryText}>{primary.label}</Text>
       </Pressable>
+
       {secondary && (
         <Pressable
-          style={({ pressed }) => [
-            ctaStyles.secondary,
-            pressed && { opacity: 0.92, transform: [{ translateY: 1 }] },
-          ]}
-          onPress={() => secondary.onPress(router as any)}
+          style={({ pressed }) => [ctaStyles.secondary, pressed && { opacity: 0.92, transform: [{ translateY: 1 }] }]}
+          onPress={() => secondary.onPress(router)}
         >
           <Text style={ctaStyles.secondaryText}>{secondary.label}</Text>
         </Pressable>
@@ -441,7 +486,7 @@ const ctaStyles = StyleSheet.create({
   secondaryText: { color: colors.lightBg1, fontWeight: "800" },
 });
 
-/* ============ UI blocks ============ */
+/* ===================== Blocos UI ===================== */
 function ProPill({ onPress }: { onPress: () => void }) {
   return (
     <Pressable
@@ -452,14 +497,6 @@ function ProPill({ onPress }: { onPress: () => void }) {
       <Ionicons name="sparkles-outline" size={14} color={colors.primary} />
       <Text style={styles.pillText}>Obter Nexas AI Pro</Text>
     </Pressable>
-  );
-}
-
-function LogoBox() {
-  return (
-    <View style={styles.logoWrap}>
-      <Image source={BrandLogo} style={styles.logoImage} resizeMode="contain" />
-    </View>
   );
 }
 
@@ -485,25 +522,7 @@ function InfoCard({
   );
 }
 
-function ChatBar({ insetsBottom }: { insetsBottom: number }) {
-  return (
-    <View style={[chat.container, { paddingBottom: 8 + insetsBottom }]}>
-      <View style={chat.inputWrap}>
-        <TextInput
-          placeholder="Pergunte algo"
-          placeholderTextColor={colors.lightBg2}
-          style={chat.input}
-          returnKeyType="send"
-        />
-        <Pressable style={chat.send} android_ripple={{ color: "rgba(255,255,255,0.08)", radius: 20 }}>
-          <Ionicons name="send-outline" size={18} color={colors.lightBg2} />
-        </Pressable>
-      </View>
-    </View>
-  );
-}
-
-/* ============ Styles ============ */
+/* ===================== Estilos ===================== */
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.bgDark4 },
 
@@ -511,21 +530,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 18,
+    marginBottom: 14,
   },
-  pill: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: colors.primary,
-    backgroundColor: "transparent",
-  },
-  pillText: { color: colors.primary, fontWeight: "800", fontSize: 13 },
-
   hambtn: {
     width: 42,
     height: 42,
@@ -537,26 +543,41 @@ const styles = StyleSheet.create({
     borderColor: colors.bgDark3,
   },
 
-  hero: { alignItems: "center", marginTop: 4, marginBottom: 28 },
-  heroWelcome: { color: "#fff", fontSize: 28, lineHeight: 32, fontWeight: "700", marginTop: 18 },
-  heroTitle: { color: colors.primary, fontSize: 36, lineHeight: 40, fontWeight: "900", marginTop: 2 },
+  pill: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: colors.primary,
+  },
+  pillText: { color: colors.primary, fontWeight: "800", fontSize: 13 },
 
-  logoWrap: { width: 90, height: 90, alignItems: "center", justifyContent: "center" },
-  logoImage: { width: "86%", height: "86%" },
+  hero: { alignItems: "center", marginTop: 2, marginBottom: 20 },
+  logoWrap: { width: 80, height: 80, alignItems: "center", justifyContent: "center" },
+  logoImage: { width: "80%", height: "80%" },
+  heroWelcome: { color: "#fff", fontSize: 24, fontWeight: "700", marginTop: 14 },
+  heroTitle: { color: colors.primary, fontSize: 34, fontWeight: "900" },
 
   gridRow: { flexDirection: "row", gap: 14 },
+
   card: {
     flex: 1,
     backgroundColor: colors.bgDark2,
     borderWidth: 1,
     borderColor: colors.bgDark3,
-    borderRadius: 16,
+    borderRadius: 14,
     padding: 16,
-    minHeight: 88,
   },
-  cardTitle: { color: "#fff", fontSize: 16, fontWeight: "800", marginBottom: 6 },
+  cardTitle: { color: "#fff", fontSize: 15, fontWeight: "800" },
   cardSub: { color: colors.lightBg2, fontSize: 12 },
-  cardChevron: { position: "absolute", right: 12, top: 12 },
+  cardChevron: { position: "absolute", right: 10, top: 10 },
+
+  msgBubble: { padding: 12, borderRadius: 12, maxWidth: "85%" },
+  msgUser: { backgroundColor: colors.primary, alignSelf: "flex-end" },
+  msgAI: { backgroundColor: colors.bgDark2, alignSelf: "flex-start" },
 });
 
 const chat = StyleSheet.create({
@@ -565,12 +586,10 @@ const chat = StyleSheet.create({
     left: 16,
     right: 16,
     bottom: 0,
-    flexDirection: "row",
-    alignItems: "center",
   },
   inputWrap: {
     flex: 1,
-    height: 56,
+    height: 54,
     borderRadius: 12,
     backgroundColor: colors.bgDark2,
     borderWidth: 1,
@@ -590,3 +609,42 @@ const chat = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
+/* ===================== ChatBar (fora do styles p/ usar chat styles) ===================== */
+function ChatBar({
+  input,
+  setInput,
+  loading,
+  onSend,
+  insetsBottom,
+  onFocus,
+}: {
+  input: string;
+  setInput: (s: string) => void;
+  loading: boolean;
+  onSend: () => void;
+  insetsBottom: number;
+  onFocus?: () => void;
+}) {
+  return (
+    <View style={[chat.container, { paddingBottom: 8 + insetsBottom }]}>
+      <View style={chat.inputWrap}>
+        <TextInput
+          placeholder="Pergunte algo"
+          placeholderTextColor={colors.lightBg2}
+          style={chat.input}
+          value={input}
+          onChangeText={setInput}
+          onSubmitEditing={onSend}
+          editable={!loading}
+          onFocus={onFocus}
+          blurOnSubmit={false}
+          returnKeyType="send"
+        />
+        <Pressable style={chat.send} onPress={onSend} disabled={loading}>
+          <Ionicons name={loading ? "hourglass-outline" : "send-outline"} size={18} color={colors.lightBg2} />
+        </Pressable>
+      </View>
+    </View>
+  );
+}
