@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-
+import { colors } from '../utils/colors';
 type Action = { label: string; icon: keyof typeof Ionicons.glyphMap; onPress?: () => void };
 
 const actions: Action[] = [
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   row: { flexDirection: "row", gap: 12 },
   item: {
     flex: 1,
-    backgroundColor: "#171C24",
+    backgroundColor: colors.bgDark2,
     borderRadius: 12,
     paddingVertical: 16,
     alignItems: "center",
@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 12,
-    backgroundColor: "#1F2835",
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 8,

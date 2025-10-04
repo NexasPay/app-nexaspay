@@ -1,6 +1,6 @@
 import { Text, View, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { colors } from '../utils/colors';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
@@ -8,7 +8,7 @@ import { useState } from 'react';
 const PlaceholderImage = require('../assets/logo/nexaspay_logo.png');
 const GrowBar = require('../assets/growbar3.png');
 
-export default function Register1() {
+export default function Register3() {
   const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
 
   const pickImageAsync = async () => {
@@ -92,19 +92,18 @@ export default function Register1() {
           )}
 
         
-          <Link href="/register3" asChild>
-            <TouchableOpacity
-              style={{
-                backgroundColor: colors.primary,
-                padding: 15,
-                borderRadius: 10,
-                alignItems: 'center',
-                marginBottom: 20,
-              }}
-            >
-              <Text style={{ color: '#fff', fontWeight: 'bold' }}>Registre</Text>
-            </TouchableOpacity>
-          </Link>
+<Link href="/home" asChild>
+  <TouchableOpacity
+    style={{
+      backgroundColor: colors.primary,
+      padding: 15,
+      borderRadius: 10,
+      alignItems: "center",
+    }}
+  >
+    <Text style={{ color: "#fff", fontWeight: "bold" }}>Registre</Text>
+  </TouchableOpacity>
+</Link>
 
        
           <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 20 }}>

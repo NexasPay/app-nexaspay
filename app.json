@@ -4,31 +4,28 @@
     "slug": "nexaspay",
     "scheme": "nexaspay",
     "version": "1.0.0",
-
     "extra": {
       "router": {
         "origin": false
       }
     },
-
     "web": {
       "favicon": null
     },
-
     "experiments": {
       "tsconfigPaths": true
     },
-
-    "plugins": [],
+    "plugins": [
+      "expo-font"
+    ],
     "orientation": "portrait",
     "userInterfaceStyle": "light",
-
-    "assetBundlePatterns": ["**/*"],
-
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
-
     "android": {
       "adaptiveIcon": {
         "foregroundImage": null,

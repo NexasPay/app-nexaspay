@@ -6,11 +6,31 @@ import BalanceCard from "../components/BalanceCard";
 import QuickActions from "../components/QuickActions";
 import NewsCard from "../components/NewsCard";
 import PromoGrid from "../components/PromoGrid";
+
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-const PlaceholderImage = require('../assets/perfil-images/kina-image.png');
+import {
+  useFonts,
+  Roboto_400Regular,
+} from "@expo-google-fonts/roboto";
+
+const PlaceholderImage = require("../assets/perfil-images/kina-image.png");
+
+const getHours = () => {
+  const currentHour = new Date().getHours();
+  if (currentHour < 12) return "Bom dia!";
+  if (currentHour < 18) return "Boa tarde!";
+  return "Boa noite!";
+};
 
 export default function Home() {
   const insets = useSafeAreaInsets();
+  const greeting = getHours();
+
+  const [fontsLoaded] = useFonts({
+    Roboto_400Regular,
+  });
+
+  if (!fontsLoaded) return null;
 
   return (
     <View style={styles.screen}>
@@ -24,12 +44,9 @@ export default function Home() {
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.userBox}>
-            <Image
-              source={ PlaceholderImage }
-              style={styles.avatar}
-            />
+            <Image source={PlaceholderImage} style={styles.avatar} />
             <View>
-              <Text style={styles.hello}>Bom dia!</Text>
+              <Text style={styles.hello}>{greeting}</Text>
               <Text style={styles.username}>Usuário</Text>
             </View>
           </View>
@@ -75,8 +92,17 @@ const styles = StyleSheet.create({
   },
   userBox: { flexDirection: "row", alignItems: "center", gap: 10 },
   avatar: { width: 44, height: 44, borderRadius: 22 },
-  hello: { color: "#AFC2DC", fontSize: 12, marginBottom: 2 },
-  username: { color: "#4DA6FF", fontSize: 18, fontWeight: "800" },
+
+  // 👇 Roboto aplicada aqui
+  hello: {
+    color: "#FFF",
+    fontSize: 12,
+    marginBottom: 2,
+    fontFamily: "Roboto_400Regular",
+    fontWeight: "500",
+  },
+
+  username: { color: "#4DA6FF", fontSize: 22, fontWeight: "800" },
 
   bellWrap: {
     width: 36,
