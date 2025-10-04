@@ -41,7 +41,8 @@ export default function NexasAI() {
         <View style={styles.topBar}>
           <ProPill onPress={() => setSheet("pro")} />
           <Pressable
-            onPress={() => setMenuOpen(v => !v)}
+            onPress={() => setMenuOpen((v) => !v)}
+            android_ripple={{ color: "rgba(255,255,255,0.08)", radius: 26 }}
             style={({ pressed }) => [styles.hambtn, pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] }]}
           >
             <Ionicons name="menu-outline" size={26} color={colors.lightBg1} />
@@ -101,10 +102,9 @@ export default function NexasAI() {
         </SheetSection>
 
         <SheetCTA
-            primary={{ label: "Quero o Pro", onPress: (router) => router.push("app/pro/checkout") }}
-            secondary={{ label: "Ver depois", onPress: () => setSheet(null) }}
+          primary={{ label: "Abrir Carteiras", onPress: (router) => router.push("/carteiras") }}
+          secondary={{ label: "Ver opções", onPress: (router) => router.push("/opcoes") }}
         />
-
       </BottomSheet>
 
       <BottomSheet
@@ -152,8 +152,10 @@ export default function NexasAI() {
         </SheetSection>
 
         <SheetCTA
-          primary={{ label: "Quero o Pro", onPress: () => {} }}
-          secondary={{ label: "Ver depois", onPress: () => {} }}
+          // 👉 vai para a nova rota de checkout
+          primary={{ label: "Quero o Pro", onPress: (router) => router.push("/pro/checkout") }}
+          // 👉 fecha apenas o sheet
+          secondary={{ label: "Ver depois", onPress: () => setSheet(null) }}
         />
       </BottomSheet>
     </View>
@@ -215,17 +217,21 @@ function SideMenuOverlay({
 function SideMenuContent() {
   const router = useRouter();
   const pathname = usePathname();
-  const active = useMemo(() => navigationItems.find(n => pathname?.startsWith(n.route))?.key ?? "nexasai", [pathname]);
+  const active = useMemo(
+    () => navigationItems.find((n) => pathname?.startsWith(n.route))?.key ?? "nexasai",
+    [pathname]
+  );
 
   return (
     <View style={smStyles.container}>
-      {navigationItems.map(item => {
+      {navigationItems.map((item) => {
         const isActive = item.key === active;
         return (
           <Pressable
             key={item.key}
             onPress={() => router.push(item.route)}
             style={[smStyles.item, isActive && smStyles.itemActive]}
+            android_ripple={{ color: "rgba(255,255,255,0.08)", radius: 42 }}
           >
             <Ionicons
               name={item.icon as any}
@@ -277,6 +283,7 @@ function BottomSheet({
 }) {
   const fade = useRef(new Animated.Value(0)).current;
   const y = useRef(new Animated.Value(80)).current; // animação maior
+
   useEffect(() => {
     if (visible) {
       Animated.parallel([
@@ -297,15 +304,8 @@ function BottomSheet({
         <Animated.View style={[StyleSheet.absoluteFill, { backgroundColor: "rgba(0,0,0,0.35)", opacity: fade }]} />
       </Pressable>
 
-      {/* Sobe mais: ocupa ~80% da altura (top: '12%') */}
-      <Animated.View
-        style={[
-          bsStyles.sheet,
-          {
-            transform: [{ translateY: y }],
-          },
-        ]}
-      >
+      {/* Sobe mais: ~80% da altura (top: '12%') */}
+      <Animated.View style={[bsStyles.sheet, { transform: [{ translateY: y }] }]}>
         <View style={bsStyles.header}>
           <Text style={bsStyles.title}>{title}</Text>
           <Pressable onPress={onClose} style={bsStyles.close}>
@@ -326,7 +326,7 @@ const bsStyles = StyleSheet.create({
     position: "absolute",
     left: 8,
     right: 8,
-    top: "12%",          // 👈 puxa mais para cima
+    top: "12%",
     bottom: 8,
     borderRadius: 18,
     backgroundColor: colors.bgDark2,
@@ -377,7 +377,7 @@ function SheetCTA({
   secondary,
 }: {
   primary: { label: string; onPress: (router: ReturnType<typeof useRouter>) => void | (() => void) };
-  secondary?: { label: string; onPress: (router: ReturnType<typeof useRouter>) => void | (() => void) };
+  secondary?: { label: string; onPress: (router: ReturnType<typeof useRouter>) => void | (() => void) | (() => void) };
 }) {
   const router = useRouter();
   return (
@@ -430,7 +430,11 @@ const ctaStyles = StyleSheet.create({
 /* ============ UI blocks ============ */
 function ProPill({ onPress }: { onPress: () => void }) {
   return (
-    <Pressable onPress={onPress} style={({ pressed }) => [styles.pill, pressed && { opacity: 0.9 }]}>
+    <Pressable
+      onPress={onPress}
+      android_ripple={{ color: "rgba(255,255,255,0.08)", radius: 26 }}
+      style={({ pressed }) => [styles.pill, pressed && { opacity: 0.9 }]}
+    >
       <Ionicons name="sparkles-outline" size={14} color={colors.primary} />
       <Text style={styles.pillText}>Obter Nexas AI Pro</Text>
     </Pressable>
@@ -455,7 +459,11 @@ function InfoCard({
   onPress: () => void;
 }) {
   return (
-    <Pressable onPress={onPress} style={({ pressed }) => [styles.card, pressed && { opacity: 0.96 }]}>
+    <Pressable
+      onPress={onPress}
+      android_ripple={{ color: "rgba(255,255,255,0.05)" }}
+      style={({ pressed }) => [styles.card, pressed && { opacity: 0.96 }]}
+    >
       <Text style={styles.cardTitle}>{title}</Text>
       <Text style={styles.cardSub}>{subtitle}</Text>
       <Ionicons name="chevron-forward" size={18} color={colors.lightBg2} style={styles.cardChevron} />
@@ -473,7 +481,7 @@ function ChatBar({ insetsBottom }: { insetsBottom: number }) {
           style={chat.input}
           returnKeyType="send"
         />
-        <Pressable style={chat.send}>
+        <Pressable style={chat.send} android_ripple={{ color: "rgba(255,255,255,0.08)", radius: 20 }}>
           <Ionicons name="send-outline" size={18} color={colors.lightBg2} />
         </Pressable>
       </View>
