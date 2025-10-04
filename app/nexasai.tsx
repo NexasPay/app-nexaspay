@@ -43,7 +43,10 @@ export default function NexasAI() {
           <Pressable
             onPress={() => setMenuOpen((v) => !v)}
             android_ripple={{ color: "rgba(255,255,255,0.08)", radius: 26 }}
-            style={({ pressed }) => [styles.hambtn, pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] }]}
+            style={({ pressed }) => [
+              styles.hambtn,
+              pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] },
+            ]}
           >
             <Ionicons name="menu-outline" size={26} color={colors.lightBg1} />
           </Pressable>
@@ -56,7 +59,7 @@ export default function NexasAI() {
           <Text style={styles.heroTitle}>Nexas AI</Text>
         </View>
 
-        {/* Grid – 2 cards do figma */}
+        {/* Grid – 2 cards */}
         <View style={styles.gridRow}>
           <InfoCard
             title="Conheça o app"
@@ -79,7 +82,7 @@ export default function NexasAI() {
         <SideMenuContent />
       </SideMenuOverlay>
 
-      {/* Sheets enriquecidos */}
+      {/* Sheets */}
       <BottomSheet
         visible={sheet === "conheca"}
         title="Conheça o app"
@@ -107,31 +110,45 @@ export default function NexasAI() {
         />
       </BottomSheet>
 
+      {/* ====== SOBRE (agora com o mesmo visual do PRO) ====== */}
       <BottomSheet
         visible={sheet === "sobre"}
         title="Sobre o Nexas AI"
         onClose={() => setSheet(null)}
       >
-        <SheetSection title="Como funciona">
-          <Feature text="Analisa gastos e renda em tempo real" icon="pulse-outline" />
-          <Feature text="Detecta padrões e envia alertas" icon="notifications-outline" />
-          <Feature text="Gera insights e recomendações" icon="sparkles-outline" />
+        <SheetSection title="Quem sou eu">
+          <Feature
+            text="Sou a inteligência artificial da NexasPay, criada para simplificar sua vida financeira com praticidade e segurança."
+            icon="sparkles-outline"
+          />
+          <Feature
+            text="Aprendo com o seu uso do app para entregar experiências e sugestões cada vez mais personalizadas."
+            icon="bulb-outline"
+          />
         </SheetSection>
 
-        <SheetSection title="O que eu analiso">
-          <Feature text="Categorias de despesas e recorrências" icon="pie-chart-outline" />
-          <Feature text="Fluxo de caixa e metas" icon="trending-up-outline" />
+        <SheetSection title="Como funciono">
+          <Feature
+            text="Analiso atividades, detecto padrões e transformo dados em insights fáceis de entender."
+            icon="analytics-outline"
+          />
+          <Feature
+            text="Envio alertas úteis para decisões no momento certo — sem excesso de notificações."
+            icon="notifications-outline"
+          />
         </SheetSection>
 
-        <SheetSection title="Limites & privacidade">
-          <Feature text="Não realizo operações sem sua ação" icon="hand-left-outline" />
-          <Feature text="Você decide o que compartilhar" icon="toggle-outline" />
+        <SheetSection title="Privacidade e controle">
+          <Feature
+            text="Não executo operações financeiras automaticamente. Você está sempre no comando."
+            icon="hand-left-outline"
+          />
+          <Feature
+            text="Seus dados são protegidos por criptografia e processados apenas com sua permissão."
+            icon="lock-closed-outline"
+          />
         </SheetSection>
-
-        <SheetCTA
-          primary={{ label: "Ver exemplos", onPress: () => {} }}
-          secondary={{ label: "Configurar IA", onPress: (router) => router.push("/opcoes") }}
-        />
+        {/* Sem CTA aqui, mantendo apenas a explicação */}
       </BottomSheet>
 
       <BottomSheet
@@ -152,9 +169,7 @@ export default function NexasAI() {
         </SheetSection>
 
         <SheetCTA
-          // 👉 vai para a nova rota de checkout
           primary={{ label: "Quero o Pro", onPress: (router) => router.push("/pro/checkout") }}
-          // 👉 fecha apenas o sheet
           secondary={{ label: "Ver depois", onPress: () => setSheet(null) }}
         />
       </BottomSheet>
@@ -282,7 +297,7 @@ function BottomSheet({
   children: React.ReactNode;
 }) {
   const fade = useRef(new Animated.Value(0)).current;
-  const y = useRef(new Animated.Value(80)).current; // animação maior
+  const y = useRef(new Animated.Value(80)).current;
 
   useEffect(() => {
     if (visible) {
@@ -301,10 +316,9 @@ function BottomSheet({
   return (
     <Animated.View style={[StyleSheet.absoluteFillObject, { zIndex: 40 }]}>
       <Pressable style={StyleSheet.absoluteFill} onPress={onClose}>
-        <Animated.View style={[StyleSheet.absoluteFill, { backgroundColor: "rgba(0,0,0,0.35)", opacity: fade }]} />
+        <Animated.View style={[StyleSheet.absoluteFill, { backgroundColor: "rgba(0,0,0,0.35)", opacity: 1 }]} />
       </Pressable>
 
-      {/* Sobe mais: ~80% da altura (top: '12%') */}
       <Animated.View style={[bsStyles.sheet, { transform: [{ translateY: y }] }]}>
         <View style={bsStyles.header}>
           <Text style={bsStyles.title}>{title}</Text>
@@ -353,7 +367,7 @@ const bsStyles = StyleSheet.create({
   },
 });
 
-/* ============ Elementos do conteúdo dos sheets ============ */
+/* ============ Elementos reutilizáveis ============ */
 function SheetSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <View style={{ marginBottom: 14 }}>
@@ -376,8 +390,8 @@ function SheetCTA({
   primary,
   secondary,
 }: {
-  primary: { label: string; onPress: (router: ReturnType<typeof useRouter>) => void | (() => void) };
-  secondary?: { label: string; onPress: (router: ReturnType<typeof useRouter>) => void | (() => void) | (() => void) };
+  primary: { label: string; onPress: (router: ReturnType<typeof useRouter>) => void };
+  secondary?: { label: string; onPress: (router: ReturnType<typeof useRouter>) => void };
 }) {
   const router = useRouter();
   return (
