@@ -12,7 +12,7 @@ const COLORS = {
   textDim: "#9AA5B5",
 };
 
-export default function FooterMenu({ active }: { active?: string }) {
+export default function SideMenu({ active }: { active?: string }) {
   return (
     <View style={styles.container}>
       {navigationItems.map((item) => {
@@ -22,13 +22,13 @@ export default function FooterMenu({ active }: { active?: string }) {
             <Pressable style={[styles.item, isActive && styles.itemActive]}>
               <Ionicons
                 name={item.icon as any}
-                size={22}
-                color={isActive ? COLORS.active : COLORS.text}
+                size={24}
+                color={isActive ? "#fff" : COLORS.textDim}
               />
               <Text
                 style={[
                   styles.label,
-                  { color: isActive ? COLORS.active : COLORS.textDim },
+                  { color: isActive ? "#fff" : COLORS.textDim },
                 ]}
               >
                 {item.label}
@@ -44,19 +44,26 @@ export default function FooterMenu({ active }: { active?: string }) {
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    flexDirection: "row",
-    justifyContent: "space-around",
+    top: 80,
+    right: 16,
     backgroundColor: COLORS.bg,
-    borderTopWidth: 1,
+    borderRadius: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 6,
+    borderWidth: 1,
     borderColor: COLORS.border,
-    paddingVertical: 10,
-    zIndex: 100, // fica por cima de overlays do dev
+    alignItems: "center",
+    zIndex: 100,
     elevation: 20,
   },
-  item: { alignItems: "center" },
-  itemActive: {},
-  label: { fontSize: 11, marginTop: 2, fontWeight: "600" },
+  item: {
+    width: 70,
+    height: 70,
+    borderRadius: 16,
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 4,
+  },
+  itemActive: { backgroundColor: COLORS.active },
+  label: { fontSize: 11, marginTop: 4, fontWeight: "600" },
 });

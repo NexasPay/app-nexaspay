@@ -2,7 +2,7 @@ import { Text, View, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, S
 import { colors } from '../utils/colors';
 import { Link } from 'expo-router';
 
-const PlaceholderImage = require('../assets/logo/nexaspay.logo.png');
+const PlaceholderImage = require('../assets/logo/nexaspay_logo.png');
 const GrowBar = require('../assets/growbar2.png')
 export default function Register1() {
   return (
