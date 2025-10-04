@@ -15,7 +15,6 @@
     "@expo-google-fonts/roboto": "^0.4.1",
     "@react-native-masked-view/masked-view": "0.3.2",
     "@tailwindcss/postcss": "^4.1.13",
-    "axios": "^1.12.2",
     "expo": "~54.0.4",
     "expo-font": "~14.0.8",
     "expo-image": "~3.0.8",
@@ -50,18 +49,5 @@
     "typescript": "~5.9.2"
   },
   "main": "expo-router/entry",
-  "private": true,
-  "description": "This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/NexasPay/app-nexaspay.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/NexasPay/app-nexaspay/issues"
-  },
-  "homepage": "https://github.com/NexasPay/app-nexaspay#readme"
+  "private": true
 }
