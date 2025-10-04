@@ -8,7 +8,7 @@ const actions: Action[] = [
   { label: "Transações", icon: "card-outline" },
   { label: "Nexas Score", icon: "analytics-outline" },
   { label: "Pix", icon: "cash-outline" },
-];
+]
 
 export default function QuickActions() {
   return (
