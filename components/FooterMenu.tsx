@@ -1,8 +1,9 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Platform } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Platform, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import homeicon from "../assets/icons/home-icon.png";
 
 type FooterMenuProps = {
   active?: "home" | "carteiras" | "nexasai" | "opcoes";
@@ -18,16 +19,26 @@ export default function FooterMenu({ active = "home" }: FooterMenuProps) {
     icon,
     route,
     isActive,
-  }: {
+    image,
+    }: {
     label: string;
-    icon: keyof typeof Ionicons.glyphMap;
+    icon?: keyof typeof Ionicons.glyphMap;
     route: string;
+    image?: any;
     isActive: boolean;
   }) => (
-    <TouchableOpacity style={styles.item} onPress={() => router.push(route)}>
-      <Ionicons name={icon} size={22} color={isActive ? "#4DA6FF" : "#BDBDBD"} />
-      <Text style={[styles.label, isActive && styles.activeLabel]}>{label}</Text>
-    </TouchableOpacity>
+  <TouchableOpacity style={styles.item} onPress={() => router.push(route)}>
+    {image ? (
+      <Image
+        source={image}
+        style={{ width: 22, height: 22, tintColor: isActive ? "#4DA6FF" : "#BDBDBD" }}
+        resizeMode="contain"
+      />
+    ) : (
+      <Ionicons name={icon!} size={22} color={isActive ? "#4DA6FF" : "#BDBDBD"} />
+    )}
+    <Text style={[styles.label, isActive && styles.activeLabel]}>{label}</Text>
+  </TouchableOpacity>
   );
 
   return (
@@ -35,6 +46,7 @@ export default function FooterMenu({ active = "home" }: FooterMenuProps) {
       <View style={styles.container}>
         <Item label="Home" icon="home-outline" route="/home" isActive={active === "home"} />
         <Item label="Carteiras" icon="wallet-outline" route="/carteiras" isActive={active === "carteiras"} />
+       <Item label="Home" image={homeicon} route="/home" isActive={active === "home"} />
         <Item label="Nexas AI" icon="sparkles-outline" route="/nexasai" isActive={active === "nexasai"} />
         <Item label="Opções" icon="settings-outline" route="/opcoes" isActive={active === "opcoes"} />
       </View>
