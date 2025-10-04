@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-
+import { colors } from '../utils/colors';
 export default function NewsCard() {
   return (
     <View style={styles.card}>
@@ -29,9 +29,9 @@ export default function NewsCard() {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#16202E",
+    backgroundColor: colors.bgDark2,
     borderRadius: 14,
-    padding: 16,
+    padding: 20,
     borderWidth: 1,
     borderColor: "#223049",
   },
