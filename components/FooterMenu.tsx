@@ -12,7 +12,7 @@ import search from "../assets/icons/search-icon.png"
 import { colors } from '../utils/colors';
 type FooterMenuProps = {
   active?: "home" | "carteiras" | "nexasai" | "opcoes";
-}
+};
 
 export default function FooterMenu({ active = "home" }: FooterMenuProps) {
   const router = useRouter();
@@ -81,10 +81,7 @@ const styles = StyleSheet.create({
     zIndex: 50,
     elevation: 20,
 
-  marginHorizontal: 20, 
-  marginBottom: 15,     
-  borderRadius: 15,
-  overflow: "hidden", 
+
   },
   container: {
     flexDirection: "row",
