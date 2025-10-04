@@ -7,10 +7,14 @@ import {
   useFonts,
   ChivoMono_700Bold,
 } from "@expo-google-fonts/chivo-mono";
+import {
+  Roboto_700Bold,
+} from "@expo-google-fonts/roboto";
 
 export default function BalanceCard() {
   const [fontsLoaded] = useFonts({
     ChivoMono_700Bold,
+    Roboto_700Bold,
   });
 
   if (!fontsLoaded) return null;
@@ -23,7 +27,8 @@ export default function BalanceCard() {
     >
       <View style={styles.rowTop}>
         <Text style={styles.badge}>Ver saldo</Text>
-        <Ionicons name="chevron-forward" size={14} color="#fff" />
+   
+<Ionicons name="caret-forward" size={14} color="#fff" />
       </View>
 
       <View style={{ height: 8 }} />
@@ -51,13 +56,24 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
     elevation: 6,
   },
-  rowTop: { flexDirection: "row", alignItems: "center", gap: 6 },
-  badge: { color: "#FFFF", fontSize: 13, fontWeight: "600" },
+  rowTop: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+  },
+  badge: {
+    color: "#FFF",
+    fontSize: 13,
+    fontFamily: "Roboto_700Bold", // ✅ Aplicado corretamente
+  },
   amount: {
     color: "#FFFFFF",
     fontSize: 34,
-    fontFamily: "ChivoMono_700Bold",
-   
+    fontFamily: "ChivoMono_700Bold", // ✅ Valor com monoespaçada
   },
-  eye: { position: "absolute", right: 16, bottom: 16 },
+  eye: {
+    position: "absolute",
+    right: 16,
+    bottom: 16,
+  },
 });
