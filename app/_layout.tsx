@@ -24,7 +24,7 @@ export default function Layout() {
         <Stack.Screen name="carteiras" />
         <Stack.Screen name="nexasai" />
         <Stack.Screen name="opcoes" />
-        <Stack.Screen name="transacoes" />
+        <Stack.Screen name="transaction" />
       </Stack>
     </SafeAreaProvider>
   );
