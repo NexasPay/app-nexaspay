@@ -24,7 +24,7 @@ export default function PagamentoScreen() {
     const idTransacao = String(txid ?? `TRN${now.getTime().toString().slice(-9)}`);
 
     router.push({
-      pathname: "/pro/comprovante",
+      pathname: "pro/comprovante",
       params: {
         valor: String(valor ?? "0.00"),
         nome: String(nome ?? "—"),

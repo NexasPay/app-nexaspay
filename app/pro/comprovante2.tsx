@@ -46,7 +46,7 @@ export default function ComprovanteScreen() {
         <View style={styles.checkCircle}>
           <Ionicons name="checkmark" size={42} color="#fff" />
         </View>
-        <Text style={styles.status}>Pix Efetuado</Text>
+        <Text style={styles.status}>TED Efetuado</Text>
         <Text style={styles.amount}>{formatBRL(String(valor))}</Text>
       </View>
 
