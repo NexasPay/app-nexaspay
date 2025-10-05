@@ -1,7 +1,8 @@
-import { Text, View, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, ScrollView  } from 'react-native';
+import { Text, View, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, ScrollView, Alert  } from 'react-native';
 import { colors } from '../utils/colors';
 import { Link, useRouter } from 'expo-router';
 import axios from 'axios';
+import { API_URL } from '@env'; 
 import { useState } from 'react';
 const PlaceholderImage = require('../assets/logo/nexaspay_logo.png');
 
@@ -9,6 +10,31 @@ export default function LoginScreen() {
   const router = useRouter(); 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+
+const handleChange = (): void => {
+  router.push("/home");
+}
+const createUser = async () => {
+  const userData = {
+    email,
+    password,
+  };
+
+
+
+  try {
+     const response = await axios.post(`${API_URL}/create`, userData);
+    
+    if (response.status === 200) {
+      Alert.alert('Sucesso', 'Usuário criado com sucesso!', [{ text: 'OK' }]);
+      handleChange();
+    }
+  } catch (error) {
+    console.error(error);
+    Alert.alert('Erro', 'Houve um erro ao criar o usuário', [{ text: 'OK' }]);
+  }
+};
 
   return (
     <KeyboardAvoidingView
@@ -33,6 +59,8 @@ export default function LoginScreen() {
         <View style={{ flex: 1, justifyContent: 'flex-start', width: '100%' }}>
           <Text style={{ color: '#fff', marginBottom: 5, fontSize: 16 }}>Email</Text>
           <TextInput
+          value={email}
+          onChangeText={setEmail}
             placeholder="Email"
             placeholderTextColor="#dbdbdb"
             style={{
@@ -46,6 +74,8 @@ export default function LoginScreen() {
 
           <Text style={{ color: '#fff', marginBottom: 5, fontSize: 16 }}>Senha</Text>
           <TextInput
+          value={password}
+          onChangeText={setPassword}
             placeholder="Senha"
             placeholderTextColor="#dbdbdb"
             style={{
@@ -66,7 +96,7 @@ export default function LoginScreen() {
               borderRadius: 10,
               alignItems: 'center',
             }}
-            onPress={() => router.push("/home")} // 👈 Navega para a Home
+            onPress={createUser} // 👈 Navega para a Home
           >
             <Text style={{ color: '#fff', fontWeight: 'bold' }}>Login</Text>
           </TouchableOpacity>

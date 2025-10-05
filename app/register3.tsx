@@ -15,6 +15,8 @@ export default function Register3() {
   const [address, setAddress] = useState('');
   const [phone, setPhone] = useState('');
 
+
+
 const createUser = async () => {
   const userData = {
     address,
@@ -22,7 +24,7 @@ const createUser = async () => {
   };
 
   try {
-     const response = await axios.get(`${API_URL}/create`);
+     const response = await axios.post(`${API_URL}/create`,userData);
 
   
     if (response.status === 200) {

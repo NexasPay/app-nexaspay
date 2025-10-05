@@ -7,11 +7,14 @@ import {
   Image,
   ScrollView,
   TouchableWithoutFeedback,
+  Alert,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../utils/colors";
 import FooterMenu from "../components/FooterMenu";
 import transactionsicon from "../assets/icons/transaction-icon.png";
+import axios from "axios";
+import { API_URL } from "@env";
 
 const contacts = [
   { id: 1, name: "João Silva", img: require("../assets/perfil-images/kina-image.png") },
@@ -25,9 +28,30 @@ export default function Transacoes() {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [selectedContact, setSelectedContact] = useState<string | null>(null);
 
+  const [fullname, setFullname] = useState('');
+  const [message, setMessage] = useState('');
+
   const pick = (name: string) => {
     setSelectedContact(name);
     setSheetOpen(false);
+  };
+const findContact = async () => {
+
+   if (!fullname) {
+      setMessage("Digite um nome para buscar!");
+      return;
+    }
+     try {
+     
+      const response = await axios.get(`${API_URL}/find?fullname=${fullname}`);
+
+      if (response.status === 200) {
+
+        setMessage("Usuário encontrado com sucesso!");
+      }
+    } catch (error) {;
+      setMessage("Nenhum usuário encontrado.");
+    }
   };
 
   return (

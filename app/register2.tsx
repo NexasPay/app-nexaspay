@@ -18,7 +18,7 @@ export default function Register2() {
       passwordCorrect,
     };
 
-     const response = await axios.get(`${API_URL}/create`);
+     const response = await axios.post(`${API_URL}/create`,userData);
   };
 
   return (

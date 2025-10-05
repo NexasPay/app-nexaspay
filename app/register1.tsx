@@ -23,7 +23,7 @@ export default function Register1() {
       cpf,
     };
 
-    const response = await axios.get(`${API_URL}/create`);
+    const response = await axios.post(`${API_URL}/create`,userData);
   };
 
   return (
