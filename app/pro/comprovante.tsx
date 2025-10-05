@@ -1,8 +1,12 @@
-import React from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+// app/pro/comprovante.tsx
+import React, { useState, useRef, useEffect, useMemo } from "react";
+import { View, Text, StyleSheet, Pressable, Animated, Easing } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useLocalSearchParams } from "expo-router";
-import { useRouter } from "expo-router"; // Certifique-se de importar corretamente
+import { router, useLocalSearchParams, usePathname, useRouter } from "expo-router";
+import { colors } from "../../utils/colors";
+import { navigationItems } from "../../utils/navigationItems";
+
+const successGreen = "#22C55E";
 
 function formatBRL(v?: string) {
   const n = Number(v ?? "0");
@@ -13,11 +17,10 @@ function formatBRL(v?: string) {
   }
 }
 
-const successGreen = "#22C55E"; // Cor de sucesso (verde)
-
 export default function ComprovanteScreen() {
   const { valor, nome, chave, banco, data, hora, txid } = useLocalSearchParams();
-  const router = useRouter(); // Usando o hook useRouter para navegação
+  const [menuOpen, setMenuOpen] = useState(false);
+  const router = useRouter();
 
   return (
     <View style={styles.screen}>
@@ -25,14 +28,23 @@ export default function ComprovanteScreen() {
       <View style={styles.header}>
         <View style={styles.headerLeft}>
           <Ionicons name="receipt-outline" size={18} color="#fff" />
-          <Text style={styles.headerTitle}>Transferência Concluída</Text>
+          <Text style={styles.headerTitle}>Concluído</Text>
         </View>
+
+        <Pressable onPress={() => setMenuOpen(!menuOpen)} hitSlop={10}>
+          <Ionicons name="menu-outline" size={28} color="#fff" />
+        </Pressable>
       </View>
+
+      {/* Menu Overlay */}
+      <SideMenuOverlay open={menuOpen} onClose={() => setMenuOpen(false)}>
+        <SideMenuContent />
+      </SideMenuOverlay>
 
       {/* Check + Info */}
       <View style={styles.center}>
         <View style={styles.checkCircle}>
-          <Ionicons name="checkmark" size={70} color="#fff" />
+          <Ionicons name="checkmark" size={42} color="#fff" />
         </View>
         <Text style={styles.status}>Pix Efetuado</Text>
         <Text style={styles.amount}>{formatBRL(String(valor))}</Text>
@@ -58,7 +70,7 @@ export default function ComprovanteScreen() {
         </View>
       </View>
 
-      <Text style={styles.divider}>-----------------------------------------------------</Text>
+      <Text style={styles.divider}>----------------------------------------------------------</Text>
 
       {/* Seção Destinatário */}
       <View style={styles.section}>
@@ -84,17 +96,176 @@ export default function ComprovanteScreen() {
           <Text style={styles.label}>Destino</Text>
           <Text style={styles.value}>{String(banco ?? "NexasPay")}</Text>
         </View>
+        <View>
+          <Pressable style={styless.homeBtn} onPress={() => router.push('/home')}>
+            <Text style={styless.homeBtnText}>Retornar à Home</Text>
+          </Pressable>
+        </View>
       </View>
-
-      {/* Button to go home */}
-      <Pressable style={styles.homeBtn} onPress={() => router.push('/home')}>
-        <Text style={styles.homeBtnText}>Retornar à Home</Text>
-      </Pressable>
     </View>
   );
 }
 
+/* ===================== SideMenu Overlay ===================== */
+function SideMenuOverlay({
+  open,
+  onClose,
+  children,
+}: {
+  open: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+}) {
+  const fade = useRef(new Animated.Value(0)).current;
+  const slide = useRef(new Animated.Value(20)).current;
+
+  useEffect(() => {
+    if (open) {
+      Animated.parallel([
+        Animated.timing(fade, { toValue: 1, duration: 180, useNativeDriver: true }),
+        Animated.spring(slide, { toValue: 0, useNativeDriver: true, bounciness: 6 }),
+      ]).start();
+    } else {
+      Animated.parallel([
+        Animated.timing(fade, {
+          toValue: 0,
+          duration: 160,
+          easing: Easing.out(Easing.quad),
+          useNativeDriver: true,
+        }),
+        Animated.timing(slide, { toValue: 20, duration: 160, useNativeDriver: true }),
+      ]).start();
+    }
+  }, [open]);
+
+  if (!open) return null;
+
+  return (
+    <Animated.View style={[StyleSheet.absoluteFillObject, { zIndex: 30 }]}>
+      <Pressable style={StyleSheet.absoluteFill} onPress={onClose}>
+        <Animated.View
+          style={[
+            StyleSheet.absoluteFill,
+            { backgroundColor: "rgba(0,0,0,0.35)", opacity: fade },
+          ]}
+        />
+      </Pressable>
+
+      <Animated.View
+        style={{
+          position: "absolute",
+          top: 86,
+          right: 16,
+          transform: [{ translateY: slide }],
+          opacity: fade,
+        }}
+      >
+        {children}
+      </Animated.View>
+    </Animated.View>
+  );
+}
+
+/* ===================== SideMenuContent ===================== */
+function SideMenuContent() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const active = useMemo(
+    () => navigationItems.find((n) => pathname?.startsWith(n.route))?.key ?? "carteiras",
+    [pathname]
+  );
+
+  return (
+    <View style={smStyles.container}>
+      {navigationItems.map((item) => {
+        const isActive = item.key === active;
+        return (
+          <Pressable
+            key={item.key}
+            onPress={() => router.push(item.route)}
+            style={[smStyles.item, isActive && smStyles.itemActive]}
+            android_ripple={{ color: "rgba(255,255,255,0.08)", radius: 42 }}
+          >
+            <Ionicons
+              name={item.icon as keyof typeof Ionicons.glyphMap}
+              size={22}
+              color={isActive ? "#fff" : colors.lightBg1}
+              style={{ marginBottom: 6 }}
+            />
+            <Text
+              style={[smStyles.label, { color: isActive ? "#fff" : colors.lightBg1 }]}
+            >
+              {item.label}
+            </Text>
+          </Pressable>
+        );
+      })}
+    </View>
+  );
+}
+
+/* ===================== Estilos ===================== */
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: colors.bgDark4,
+    paddingTop: 50,
+    paddingHorizontal: 22,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 22,
+  },
+  headerLeft: { flexDirection: "row", alignItems: "center", gap: 8 },
+  headerTitle: { color: "#fff", fontSize: 18, fontWeight: "700" },
+
+  center: { alignItems: "center", marginBottom: 22 },
+  checkCircle: {
+    width: 94,
+    height: 94,
+    borderRadius: 47,
+    backgroundColor: successGreen,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 14,
+  },
+  status: { color: "#fff", fontSize: 18, fontWeight: "700" },
+  amount: {
+    color: colors.highlight1,
+    fontSize: 22,
+    fontWeight: "800",
+    marginTop: 4,
+  },
+
+  section: {
+    backgroundColor: colors.bgDark5,
+    borderRadius: 14,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: colors.bgDark2,
+    marginBottom: 16,
+  },
+  sectionTitle: { color: "#fff", fontSize: 15, fontWeight: "700", marginBottom: 10 },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingVertical: 10,
+  },
+  label: { color: colors.lightBg1, fontSize: 13 },
+  value: { color: "#fff", fontSize: 14, fontWeight: "700" },
+
+  divider: {
+    color: colors.lightBg1,
+    opacity: 0.5,
+    textAlign: "center",
+    marginVertical: 6,
+    fontSize: 12,
+  },
+});
+
+const styless = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: "#0E1114", // Fundo escuro
@@ -170,3 +341,28 @@ const styles = StyleSheet.create({
   },
   homeBtnText: { color: "#fff", fontWeight: "700", fontSize: 16 },
 });
+
+const smStyles = StyleSheet.create({
+  container: {
+    backgroundColor: colors.bgDark2,
+    borderRadius: 22,
+    paddingVertical: 10,
+    paddingHorizontal: 6,
+    borderWidth: 1,
+    borderColor: colors.bgDark3,
+    alignItems: "center",
+  },
+  item: {
+    width: 80,
+    height: 76,
+    borderRadius: 16,
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 4,
+  },
+  itemActive: { backgroundColor: colors.primary },
+  label: { fontSize: 11, fontWeight: "700" },
+
+  
+});
+

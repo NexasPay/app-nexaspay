@@ -212,7 +212,7 @@ export default function NexasAI() {
         </SheetSection>
 
         <SheetCTA
-          primary={{ label: "Quero o Pro", onPress: (r) => r.push("/pro/checkout") }}
+          primary={{ label: "Quero o Pro", onPress: (r) => r.push("/pro/assinatura") }}
           secondary={{ label: "Ver depois", onPress: (_r) => setSheet(null) }}
         />
       </BottomSheet>
