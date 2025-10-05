@@ -7,19 +7,19 @@ import { API_URL } from '@env';
 const PlaceholderImage = require('../assets/logo/nexaspay_logo.png');
 const GrowBar = require('../assets/growbar2.png')
 export default function Register2() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [passwordCorrect,setPasswordCorrect] = useState('');
+   // const [email, setEmail] = useState('');
+   // const [password, setPassword] = useState('');
+   // const [passwordCorrect,setPasswordCorrect] = useState('');
     
-      const createUser = async () => {
-    const userData = {
-      email,
-      password,
-      passwordCorrect,
-    };
-
-     const response = await axios.post(`${API_URL}/create`,userData);
-  };
+//    const createUser = async () => {
+//  const userData = {
+//    email,
+//    password,
+//    passwordCorrect,
+//  };
+//
+//   const response = await axios.post(`${API_URL}/create`,userData);
+//};
 
   return (
     <KeyboardAvoidingView
@@ -44,8 +44,8 @@ export default function Register2() {
         <Text style={{ color: '#fff', marginBottom: 5, fontWeight: 'medium',  fontSize: 16 }}>Email</Text>
         <TextInput
           placeholder="Digite seu email"
-          value={email}
-          onChangeText={setEmail}
+        // value={email}
+        // onChangeText={setEmail}
 
           
           placeholderTextColor="#dbdbdb"
@@ -58,8 +58,8 @@ export default function Register2() {
           }}
         /><Text style={{ color: '#fff', marginBottom: 5, fontWeight: 'medium',  fontSize: 16 }}>Senha</Text>
         <TextInput
-          value={password}
-          onChangeText={setPassword}
+      //   value={password}
+      //   onChangeText={setPassword}
           placeholder="Digite sua senha"
           placeholderTextColor="#dbdbdb"
           style={{
@@ -74,8 +74,8 @@ export default function Register2() {
         />
   <Text style={{ color: '#fff', marginBottom: 5, fontWeight: 'medium',fontSize: 16  }}>Confirmar sua senha</Text>
         <TextInput
-          value={passwordCorrect}
-          onChangeText={setPasswordCorrect}
+      //    value={passwordCorrect}
+      //    onChangeText={setPasswordCorrect}
           placeholder="Confirmar sua senha"
           placeholderTextColor="#dbdbdb"
           style={{
@@ -96,7 +96,7 @@ export default function Register2() {
               borderRadius: 10,
               alignItems: 'center',
             }}
-            onPress={createUser} 
+           // onPress={createUser} 
           >
             <Text style={{ color: '#fff', fontWeight: 'bold' }}>Continuar</Text>
           </TouchableOpacity>

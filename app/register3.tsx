@@ -12,30 +12,30 @@ const GrowBar = require('../assets/growbar3.png');
 
 export default function Register3() {
   const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
-  const [address, setAddress] = useState('');
-  const [phone, setPhone] = useState('');
+  //const [address, setAddress] = useState('');
+//  const [phone, setPhone] = useState('');
 
 
 
-const createUser = async () => {
-  const userData = {
-    address,
-    phone,
-  };
-
-  try {
-     const response = await axios.post(`${API_URL}/create`,userData);
-
-  
-    if (response.status === 200) {
-      Alert.alert('Sucesso', 'Usuário criado com sucesso!', [{ text: 'OK' }]);
-    }
-  } catch (error) {
-
-    Alert.alert('Erro', 'Houve um erro ao criar o usuário', [{ text: 'OK' }]);
-  }
-};
-
+//const createUser = async () => {
+// const userData = {
+//   address,
+//   phone,
+// };
+//
+// try {
+//    const response = await axios.post(`${API_URL}/create`,userData);
+//
+// 
+//   if (response.status === 200) {
+//     Alert.alert('Sucesso', 'Usuário criado com sucesso!', [{ text: 'OK' }]);
+//   }
+// } catch (error) {
+//
+//   Alert.alert('Erro', 'Houve um erro ao criar o usuário', [{ text: 'OK' }]);
+// }
+//;
+//
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -62,8 +62,8 @@ const createUser = async () => {
         <View style={{ flex: 1, justifyContent: 'flex-start', width: '100%' }}>
           <Text style={{ color: '#fff', marginBottom: 5, fontWeight: 'medium', fontSize: 16 }}>Endereço</Text>
           <TextInput
-            value={address}
-            onChangeText={setAddress}
+          //  value={address}
+          //  onChangeText={setAddress}
             placeholder="Digite seu endereço"
             placeholderTextColor="#dbdbdb"
             style={{
@@ -77,8 +77,8 @@ const createUser = async () => {
 
           <Text style={{ color: '#fff', marginBottom: 5, fontWeight: 'medium', fontSize: 16 }}>Celular</Text>
           <TextInput
-            value={phone}
-            onChangeText={setPhone}
+          // value={phone}
+          // onChangeText={setPhone}
              
             placeholder="Digite seu celular"
             placeholderTextColor="#dbdbdb"
@@ -131,7 +131,7 @@ const createUser = async () => {
               borderRadius: 10,
               alignItems: 'center',
             }}
-            onPress={createUser} 
+          //  onPress={createUser} 
           >
             <Text style={{ color: '#fff', fontWeight: 'bold' }}>Registre</Text>
           </TouchableOpacity>

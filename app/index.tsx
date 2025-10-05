@@ -8,33 +8,33 @@ const PlaceholderImage = require('../assets/logo/nexaspay_logo.png');
 
 export default function LoginScreen() {
   const router = useRouter(); 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+ // const [email, setEmail] = useState('');
+ // const [password, setPassword] = useState('');
 
 
 const handleChange = (): void => {
   router.push("/home");
 }
-const createUser = async () => {
-  const userData = {
-    email,
-    password,
-  };
-
-
-
-  try {
-     const response = await axios.post(`${API_URL}/create`, userData);
-    
-    if (response.status === 200) {
-      Alert.alert('Sucesso', 'Usuário criado com sucesso!', [{ text: 'OK' }]);
-      handleChange();
-    }
-  } catch (error) {
-    console.error(error);
-    Alert.alert('Erro', 'Houve um erro ao criar o usuário', [{ text: 'OK' }]);
-  }
-};
+//const createUser = async () => {
+//  const userData = {
+//    email,
+//    password,
+//  };
+//
+//
+//
+//  try {
+//     const response = await axios.post(`${API_URL}/create`, userData);
+//    
+//    if (response.status === 200) {
+//      Alert.alert('Sucesso', 'Usuário criado com sucesso!', [{ text: 'OK' }]);
+//      handleChange();
+//    }
+//  } catch (error) {
+//    console.error(error);
+//    Alert.alert('Erro', 'Houve um erro ao criar o usuário', [{ text: 'OK' }]);
+//  }
+//};
 
   return (
     <KeyboardAvoidingView
@@ -59,8 +59,8 @@ const createUser = async () => {
         <View style={{ flex: 1, justifyContent: 'flex-start', width: '100%' }}>
           <Text style={{ color: '#fff', marginBottom: 5, fontSize: 16 }}>Email</Text>
           <TextInput
-          value={email}
-          onChangeText={setEmail}
+         // value={email}
+        //  onChangeText={setEmail}
             placeholder="Email"
             placeholderTextColor="#dbdbdb"
             style={{
@@ -74,8 +74,8 @@ const createUser = async () => {
 
           <Text style={{ color: '#fff', marginBottom: 5, fontSize: 16 }}>Senha</Text>
           <TextInput
-          value={password}
-          onChangeText={setPassword}
+        // value={password}
+        /// onChangeText={setPassword}
             placeholder="Senha"
             placeholderTextColor="#dbdbdb"
             style={{
@@ -96,7 +96,7 @@ const createUser = async () => {
               borderRadius: 10,
               alignItems: 'center',
             }}
-            onPress={createUser} // 👈 Navega para a Home
+            onPress={handleChange} // 👈 Navega para a Home
           >
             <Text style={{ color: '#fff', fontWeight: 'bold' }}>Login</Text>
           </TouchableOpacity>
