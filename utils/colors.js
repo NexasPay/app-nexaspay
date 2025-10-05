@@ -20,5 +20,9 @@ export const colors = {
 
   iconsFooter: '#BDBFC5',
 
+  red: '#F44336', 
+  
+
+
   textinput: '#CFCFCF'
 };

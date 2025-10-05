@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { colors } from "../utils/colors";
+import { colors } from "../utils/colors"; // Certifique-se de importar as cores corretamente
 import { parsePix } from "../utils/parsePix";
 
 export default function ScanScreen() {
@@ -47,13 +47,9 @@ export default function ScanScreen() {
       }
 
       router.push({
-        pathname: "/pro/pagamento",
+        pathname: "/transacaoNaoConcluida", // Navegar para a tela de transação não concluída
         params: {
-          chave: pix.chave || "—",
-          nome: pix.nome || "—",
-          cidade: pix.cidade || "—",
-          valor: pix.valor || "0.00",
-          txid: pix.txid || "—",
+          valor: pix.valor || "0.00",  // Passando o valor da transação
         },
       });
     } catch (e) {
@@ -82,8 +78,8 @@ export default function ScanScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#000" },
-  center: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#0B111A" },
+  container: { flex: 1, backgroundColor: colors.bgDark4 },
+  center: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: colors.bgDark5 },
   text: { color: "#fff", fontSize: 16, textAlign: "center", paddingHorizontal: 20 },
   overlay: { position: "absolute", bottom: 80, left: 0, right: 0, alignItems: "center" },
   title: { color: "#fff", fontSize: 18, fontWeight: "600", marginBottom: 20 },
