@@ -1,7 +1,9 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import FooterMenu from "../components/FooterMenu"; // usa o seu footer padrão
+import FooterMenu from "../components/FooterMenu";
+import { colors } from "utils/colors";
+import pixicons from "../assets/icons/pix-icons.png"; // ✅ sua imagem
 
 export default function Extract() {
   const transactions = [
@@ -11,7 +13,7 @@ export default function Extract() {
       user: "Leonardo Kina",
       amount: "R$ 15,99",
       date: "30/09/25",
-      icon: "logo-bitcoin",
+      icon: "pix", // marcador pro Pix
     },
     {
       id: "2",
@@ -35,7 +37,7 @@ export default function Extract() {
       user: "Luís Felipe Scacchetti",
       amount: "R$ 10,00",
       date: "28/09/25",
-      icon: "logo-bitcoin",
+      icon: "pix",
     },
   ];
 
@@ -43,22 +45,44 @@ export default function Extract() {
     <View style={styles.screen}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
+        contentContainerStyle={{ padding: 16, paddingTop: 50 }}
       >
-        <Text style={styles.title}>Últimas Transações</Text>
-        <Ionicons name="search-outline" size={18} color="#fff" style={styles.searchIcon} />
+        {/* 🔍 Título com ícone de lupa */}
+        <View style={styles.titleRow}>
+          <Text style={styles.title}>Últimas Transações</Text>
+          <Ionicons
+            name="search-outline"
+            size={22}
+            color="#fff"
+            style={styles.searchIcon}
+          />
+        </View>
 
         <View style={styles.list}>
           {transactions.map((tx) => (
             <View key={tx.id} style={styles.card}>
               <View style={styles.row}>
                 <View style={styles.iconBox}>
-                  <Ionicons name={tx.icon as any} size={22} color="#4DA6FF" />
+                  {tx.icon === "pix" ? (
+                    <Image
+                      source={pixicons}
+                      style={styles.pixIcon}
+                      resizeMode="contain"
+                    />
+                  ) : (
+                    <Ionicons
+                      name={tx.icon as any}
+                      size={22}
+                      color="#4DA6FF"
+                    />
+                  )}
                 </View>
+
                 <View style={styles.textBox}>
                   <Text style={styles.type}>{tx.type}</Text>
                   <Text style={styles.user}>{tx.user}</Text>
                 </View>
+
                 <View style={styles.amountBox}>
                   <Text style={styles.amount}>{tx.amount}</Text>
                   <Text style={styles.date}>{tx.date}</Text>
@@ -83,16 +107,18 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#0B111A",
   },
-  title: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "800",
+  titleRow: {
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 12,
   },
+  title: {
+    color: "#fff",
+    fontSize: 20,
+    fontWeight: "700",
+  },
   searchIcon: {
-    position: "absolute",
-    top: 18,
-    right: 28,
+    marginLeft: 8,
   },
   list: {
     marginTop: 8,
@@ -102,14 +128,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     paddingVertical: 16,
     paddingHorizontal: 14,
-    marginBottom: 12,
-    shadowColor: "#000",
-    shadowOpacity: 0.2,
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 4,
-    elevation: 3,
-    borderWidth: 1,
-    borderColor: "#1E293B",
+    marginBottom: 24,
   },
   row: {
     flexDirection: "row",
@@ -119,34 +138,39 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 12,
-    backgroundColor: "rgba(77,166,255,0.12)",
+    backgroundColor: colors.bgDark5,
     justifyContent: "center",
     alignItems: "center",
     marginRight: 12,
+  },
+  pixIcon: {
+    width: 28, // tamanho ideal pra caber no box
+    height: 28,
   },
   textBox: {
     flex: 1,
   },
   type: {
     color: "#fff",
-    fontSize: 15,
-    fontWeight: "700",
+    fontSize: 18,
+    fontWeight: "500",
   },
   user: {
     color: "#A3B8CC",
-    fontSize: 13,
+    fontSize: 12,
     marginTop: 2,
   },
   amountBox: {
     alignItems: "flex-end",
   },
   amount: {
-    color: "#4DA6FF",
+    color: colors.highlight1,
     fontSize: 14,
     fontWeight: "700",
   },
   date: {
-    color: "#A3B8CC",
+    color: "#fff",
+    fontWeight: "500",
     fontSize: 12,
     marginTop: 2,
   },
@@ -162,4 +186,3 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
 });
-
