@@ -32,6 +32,8 @@ export default function Layout() {
         <Stack.Screen name="assinatura.tsx" />
         <Stack.Screen name="pro/comprovante" />
         <Stack.Screen name="transfererted1" />
+        <Stack.Screen name="transfererted2" />
+        <Stack.Screen name="nexasscore" />
       </Stack>
     </SafeAreaProvider>
   );

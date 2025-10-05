@@ -7,7 +7,7 @@ type Action = { label: string; icon: keyof typeof Ionicons.glyphMap; onPress?: (
 
 const actions: Action[] = [
   { label: "Transações", icon: "card-outline" ,route: "/transaction"},
-  { label: "Nexas Score", icon: "analytics-outline",route: "/nexascore" },
+  { label: "Nexas Score", icon: "analytics-outline",route: "/nexasscore" },
   { label: "Pix", icon: "cash-outline", route: "/pix" },
 ]
 const router = useRouter();
