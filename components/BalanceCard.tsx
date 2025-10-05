@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -12,12 +12,18 @@ import {
 } from "@expo-google-fonts/roboto";
 
 export default function BalanceCard() {
+  const [isBalanceVisible, setIsBalanceVisible] = useState(false); // Estado para visibilidade do saldo
   const [fontsLoaded] = useFonts({
     ChivoMono_700Bold,
     Roboto_700Bold,
   });
 
   if (!fontsLoaded) return null;
+
+  // Função para alternar a visibilidade do saldo
+  const toggleBalanceVisibility = () => {
+    setIsBalanceVisible(!isBalanceVisible);
+  };
 
   return (
     <LinearGradient
@@ -27,19 +33,24 @@ export default function BalanceCard() {
     >
       <View style={styles.rowTop}>
         <Text style={styles.badge}>Ver saldo</Text>
-   
-<Ionicons name="caret-forward" size={14} color="#fff" />
+        <Ionicons name="caret-forward" size={14} color="#fff" />
       </View>
 
       <View style={{ height: 8 }} />
-      <Text style={styles.amount}>R$ 0.000,00</Text>
+      
+      {/* Exibição do saldo ou máscara */}
+      <Text style={styles.amount}>
+        {isBalanceVisible ? "R$ 0.000,00" : "************"}
+      </Text>
 
-      <Ionicons
-        name="eye-off-outline"
-        size={22}
-        color="#F5FBFF"
-        style={styles.eye}
-      />
+      {/* Ícone de olho para alternar visibilidade */}
+      <Pressable onPress={toggleBalanceVisibility} style={styles.eye}>
+        <Ionicons
+          name={isBalanceVisible ? "eye-off-outline" : "eye-outline"} // Ícone de olho alternando
+          size={22}
+          color="#F5FBFF"
+        />
+      </Pressable>
     </LinearGradient>
   );
 }
