@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import OpenAI from "openai";
 import { buildSystemPrompt, fewShots } from "./agent-config.js";
 
+
+
 dotenv.config();
 
 const app = express();
