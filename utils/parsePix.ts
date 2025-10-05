@@ -2,6 +2,7 @@
 // Parser simples EMV/TLV para QR Pix (BR Code)
 type TLVMap = Record<string, string>;
 
+
 function readTLV(input: string): TLVMap {
   const map: TLVMap = {};
   let i = 0;
