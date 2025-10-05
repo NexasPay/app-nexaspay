@@ -13,6 +13,7 @@ web-build/
 
 .env
 server/.env
+
 bfg.jar
 ios
 android
