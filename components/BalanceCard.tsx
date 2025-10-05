@@ -39,18 +39,19 @@ export default function BalanceCard() {
       <View style={{ height: 8 }} />
       
       {/* Exibição do saldo ou máscara */}
+      {/* Ícone de olho para alternar visibilidade */}
+      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
       <Text style={styles.amount}>
         {isBalanceVisible ? "R$ 0.000,00" : "************"}
       </Text>
-
-      {/* Ícone de olho para alternar visibilidade */}
       <Pressable onPress={toggleBalanceVisibility} style={styles.eye}>
         <Ionicons
           name={isBalanceVisible ? "eye-off-outline" : "eye-outline"} // Ícone de olho alternando
-          size={22}
+          size={30}
           color="#F5FBFF"
         />
       </Pressable>
+      </View>
     </LinearGradient>
   );
 }
@@ -83,8 +84,6 @@ const styles = StyleSheet.create({
     fontFamily: "ChivoMono_700Bold", // ✅ Valor com monoespaçada
   },
   eye: {
-    position: "absolute",
-    right: 16,
-    bottom: 16,
+    marginBottom:5,
   },
 });
