@@ -1,18 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet, Pressable, Image } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';  // Importe os ícones do Ionicons
+import { Ionicons } from '@expo/vector-icons';  
 import FooterMenu from "../components/FooterMenu";
 import { colors } from 'utils/colors';
 
-const PlaceholderImage = require('../assets/logo/nexaspay_logo.png'); // Caminho para a imagem
+const PlaceholderImage = require('../assets/logo/nexaspay_logo.png'); 
 
 const TransactionHub = () => { 
   return (
     <View style={styles.screen}>
-      {/* Logo */}
+
       <Image 
         source={PlaceholderImage} 
-        style={styles.logoImage} // Ajuste o tamanho e o espaçamento da imagem, se necessário
       />
 
       {/* Texto de instrução */}
@@ -21,19 +20,19 @@ const TransactionHub = () => {
       {/* Grid de Botões de escolha */}
       <View style={styles.buttonGrid}>
         <Pressable style={styles.chooseBtn}>
-          <Ionicons name="logo-usd" size={30} color="#0673F6" /> {/* Ícone para Pix */}
+          <Ionicons name="logo-usd" size={30} color="#0673F6" /> 
           <Text style={styles.chooseBtnText}>Pix</Text>
         </Pressable>
         <Pressable style={styles.chooseBtn}>
-          <Ionicons name="cash" size={30} color="#0673F6" /> {/* Ícone para TED */}
+          <Ionicons name="cash" size={30} color="#0673F6" /> 
           <Text style={styles.chooseBtnText}>TED</Text>
         </Pressable>
         <Pressable style={styles.chooseBtn}>
-          <Ionicons name="logo-bitcoin" size={30} color="#0673F6" /> {/* Ícone para Crypto */}
+          <Ionicons name="logo-bitcoin" size={30} color="#0673F6" /> 
           <Text style={styles.chooseBtnText}>Crypto</Text>
         </Pressable>
         <Pressable style={styles.chooseBtn}>
-          <Ionicons name="document-text" size={30} color="#0673F6" /> {/* Ícone para Boleto */}
+          <Ionicons name="document-text" size={30} color="#0673F6" /> 
           <Text style={styles.chooseBtnText}>Boleto</Text>
         </Pressable>
       </View>
