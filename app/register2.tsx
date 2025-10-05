@@ -1,10 +1,26 @@
-import { Text, View, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, ScrollView  } from 'react-native';
+import { Text, View, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, ScrollView, Alert  } from 'react-native';
 import { colors } from '../utils/colors';
 import { Link } from 'expo-router';
-
+import { useState } from 'react';
+import axios from 'axios';
+import { API_URL } from '@env';
 const PlaceholderImage = require('../assets/logo/nexaspay_logo.png');
 const GrowBar = require('../assets/growbar2.png')
 export default function Register2() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [passwordCorrect,setPasswordCorrect] = useState('');
+    
+      const createUser = async () => {
+    const userData = {
+      email,
+      password,
+      passwordCorrect,
+    };
+
+     const response = await axios.get(`${API_URL}/create`);
+  };
+
   return (
     <KeyboardAvoidingView
       style={{
@@ -28,6 +44,10 @@ export default function Register2() {
         <Text style={{ color: '#fff', marginBottom: 5, fontWeight: 'medium',  fontSize: 16 }}>Email</Text>
         <TextInput
           placeholder="Digite seu email"
+          value={email}
+          onChangeText={setEmail}
+
+          
           placeholderTextColor="#dbdbdb"
           style={{
             backgroundColor: colors.bgDark1,
@@ -38,6 +58,8 @@ export default function Register2() {
           }}
         /><Text style={{ color: '#fff', marginBottom: 5, fontWeight: 'medium',  fontSize: 16 }}>Senha</Text>
         <TextInput
+          value={password}
+          onChangeText={setPassword}
           placeholder="Digite sua senha"
           placeholderTextColor="#dbdbdb"
           style={{
@@ -52,6 +74,8 @@ export default function Register2() {
         />
   <Text style={{ color: '#fff', marginBottom: 5, fontWeight: 'medium',fontSize: 16  }}>Confirmar sua senha</Text>
         <TextInput
+          value={passwordCorrect}
+          onChangeText={setPasswordCorrect}
           placeholder="Confirmar sua senha"
           placeholderTextColor="#dbdbdb"
           style={{
@@ -65,16 +89,17 @@ export default function Register2() {
         />
 
 <Link href="/register3" asChild>
-  <TouchableOpacity
-    style={{
-      backgroundColor: colors.primary,
-      padding: 15,
-      borderRadius: 10,
-      alignItems: "center",
-    }}
-  >
-    <Text style={{ color: "#fff", fontWeight: "bold" }}>Continuar</Text>
-  </TouchableOpacity>
+ <TouchableOpacity
+            style={{
+              backgroundColor: colors.primary,
+              padding: 15,
+              borderRadius: 10,
+              alignItems: 'center',
+            }}
+            onPress={createUser} 
+          >
+            <Text style={{ color: '#fff', fontWeight: 'bold' }}>Continuar</Text>
+          </TouchableOpacity>
 </Link>
 
         <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 50 }}>

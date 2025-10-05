@@ -1,11 +1,14 @@
 import { Text, View, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, ScrollView  } from 'react-native';
 import { colors } from '../utils/colors';
 import { Link, useRouter } from 'expo-router';
-
+import axios from 'axios';
+import { useState } from 'react';
 const PlaceholderImage = require('../assets/logo/nexaspay_logo.png');
 
 export default function LoginScreen() {
-  const router = useRouter(); // 👈 hook do expo-router
+  const router = useRouter(); 
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   return (
     <KeyboardAvoidingView

@@ -31,6 +31,7 @@ export default function Layout() {
         <Stack.Screen name="pro/pagamento" />
         <Stack.Screen name="assinatura.tsx" />
         <Stack.Screen name="pro/comprovante" />
+        <Stack.Screen name="transfererted1" />
       </Stack>
     </SafeAreaProvider>
   );
