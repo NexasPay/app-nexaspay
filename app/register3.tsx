@@ -1,15 +1,38 @@
-import { Text, View, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, ScrollView } from 'react-native';
+import { Text, View, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, ScrollView, Alert } from 'react-native';
 import { colors } from '../utils/colors';
 import { Link, router } from 'expo-router';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
+import axios from 'axios';
+import { API_URL } from '@env';
 
 const PlaceholderImage = require('../assets/logo/nexaspay_logo.png');
 const GrowBar = require('../assets/growbar3.png');
 
 export default function Register3() {
   const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
+  const [address, setAddress] = useState('');
+  const [phone, setPhone] = useState('');
+
+const createUser = async () => {
+  const userData = {
+    address,
+    phone,
+  };
+
+  try {
+     const response = await axios.get(`${API_URL}/create`);
+
+  
+    if (response.status === 200) {
+      Alert.alert('Sucesso', 'Usuário criado com sucesso!', [{ text: 'OK' }]);
+    }
+  } catch (error) {
+
+    Alert.alert('Erro', 'Houve um erro ao criar o usuário', [{ text: 'OK' }]);
+  }
+};
 
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -37,6 +60,8 @@ export default function Register3() {
         <View style={{ flex: 1, justifyContent: 'flex-start', width: '100%' }}>
           <Text style={{ color: '#fff', marginBottom: 5, fontWeight: 'medium', fontSize: 16 }}>Endereço</Text>
           <TextInput
+            value={address}
+            onChangeText={setAddress}
             placeholder="Digite seu endereço"
             placeholderTextColor="#dbdbdb"
             style={{
@@ -50,6 +75,9 @@ export default function Register3() {
 
           <Text style={{ color: '#fff', marginBottom: 5, fontWeight: 'medium', fontSize: 16 }}>Celular</Text>
           <TextInput
+            value={phone}
+            onChangeText={setPhone}
+             
             placeholder="Digite seu celular"
             placeholderTextColor="#dbdbdb"
             style={{
@@ -67,6 +95,7 @@ export default function Register3() {
           
        
           <TouchableOpacity
+          
             onPress={pickImageAsync}
             style={{
               flexDirection: 'row',
@@ -93,16 +122,17 @@ export default function Register3() {
 
         
 <Link href="/home" asChild>
-  <TouchableOpacity
-    style={{
-      backgroundColor: colors.primary,
-      padding: 15,
-      borderRadius: 10,
-      alignItems: "center",
-    }}
-  >
-    <Text style={{ color: "#fff", fontWeight: "bold" }}>Registre</Text>
-  </TouchableOpacity>
+ <TouchableOpacity
+            style={{
+              backgroundColor: colors.primary,
+              padding: 15,
+              borderRadius: 10,
+              alignItems: 'center',
+            }}
+            onPress={createUser} 
+          >
+            <Text style={{ color: '#fff', fontWeight: 'bold' }}>Registre</Text>
+          </TouchableOpacity>
 </Link>
 
        

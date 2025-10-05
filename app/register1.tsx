@@ -1,10 +1,31 @@
-import { Text, View, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, ScrollView  } from 'react-native';
+import { Text, View, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, ScrollView, Alert  } from 'react-native';
 import { colors } from '../utils/colors';
 import { Link } from 'expo-router';
+import { useState } from 'react';
+import { API_URL } from '@env'; 
+
+
+import axios from 'axios';
 
 const PlaceholderImage = require('../assets/logo/nexaspay_logo.png');
 const GrowBar = require('../assets/growbar1.png')
+
+
 export default function Register1() {
+  const [fullname, setFullname] = useState('');
+  const [cpf, setCpf] = useState('');
+  const [birthdate, setBirthdate] = useState('');
+  
+  const createUser = async () => {
+    const userData = {
+      fullname,
+      birthdate,
+      cpf,
+    };
+
+    const response = await axios.get(`${API_URL}/create`);
+  };
+
   return (
     <KeyboardAvoidingView
       style={{
@@ -27,6 +48,8 @@ export default function Register1() {
       <View style={{ flex: 1, justifyContent: 'flex-start', width: '100%' }}>
         <Text style={{ color: '#fff', marginBottom: 5, fontWeight: 'medium',  fontSize: 16 }}>Nome Completo</Text>
         <TextInput
+        value={fullname}
+        onChangeText={setFullname}
           placeholder="Digite seu nome completo"
           placeholderTextColor="#dbdbdb"
           style={{
@@ -38,6 +61,8 @@ export default function Register1() {
           }}
         /><Text style={{ color: '#fff', marginBottom: 5, fontWeight: 'medium',  fontSize: 16 }}>CPF</Text>
         <TextInput
+        value={cpf}
+        onChangeText={setCpf}
           placeholder="Digite seu CPF"
           placeholderTextColor="#dbdbdb"
            keyboardType="numeric"
@@ -51,6 +76,8 @@ export default function Register1() {
         />
   <Text style={{ color: '#fff', marginBottom: 5, fontWeight: 'medium',fontSize: 16  }}>Data de nascimento</Text>
         <TextInput
+        value={birthdate}
+        onChangeText={setBirthdate}
           placeholder="DD/MM/AAAA"
           placeholderTextColor="#dbdbdb"
             keyboardType="numeric" 
@@ -66,15 +93,16 @@ export default function Register1() {
 
 <Link href="/register2" asChild>
   <TouchableOpacity
-    style={{
-      backgroundColor: colors.primary,
-      padding: 15,
-      borderRadius: 10,
-      alignItems: "center",
-    }}
-  >
-    <Text style={{ color: "#fff", fontWeight: "bold" }}>Continuar</Text>
-  </TouchableOpacity>
+            style={{
+              backgroundColor: colors.primary,
+              padding: 15,
+              borderRadius: 10,
+              alignItems: 'center',
+            }}
+            onPress={createUser} 
+          >
+            <Text style={{ color: '#fff', fontWeight: 'bold' }}>Continuar</Text>
+          </TouchableOpacity>
 </Link>
 
 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 50 }}>
