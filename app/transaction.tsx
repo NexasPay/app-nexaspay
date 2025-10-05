@@ -8,6 +8,7 @@ import {
   Image,
   ScrollView,
   TouchableWithoutFeedback,
+  Alert,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../utils/colors";
@@ -32,6 +33,7 @@ export default function Transacoes() {
     setSelectedContact(name);
     setSheetOpen(false);
   };
+
 
   return (
     <View style={styles.screen}>
