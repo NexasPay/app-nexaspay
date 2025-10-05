@@ -97,7 +97,7 @@ export default function Extract() {
         </TouchableOpacity>
       </ScrollView>
 
-      <FooterMenu active="carteiras" />
+      <FooterMenu active="wallet" />
     </View>
   );
 }

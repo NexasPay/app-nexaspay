@@ -11,7 +11,7 @@ import search from "../assets/icons/search-icon.png";
 import { colors } from "../utils/colors";
 
 type FooterMenuProps = {
-  active?: "home" | "carteiras" | "nexasai" | "opcoes";
+  active?: "home" | "wallet" | "nexasai" | "opcoes";
 };
 
 export default function FooterMenu({ active = "home" }: FooterMenuProps) {
@@ -64,9 +64,9 @@ export default function FooterMenu({ active = "home" }: FooterMenuProps) {
     <View style={[styles.wrap, { paddingBottom: bottomPad }]}>
       <View style={styles.container}>
         <Item label="Home" image={homeicon} route="/home" />
-        <Item label="Carteiras" image={walltericon} route="/home" />
+        <Item label="Carteiras" image={walltericon} route="/wallet" />
         {/* 👇 botão central atualizado */}
-        <Item image={search} isActive={active === "carteiras"} route="/scan" />
+        <Item image={search} isActive={active === "wallet"} route="/scan" />
         <Item label="Nexas AI" image={nexasia} route="/nexasai" />
         <Item label="Opções" image={optionsicon} route="/opcoes" />
       </View>
