@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../utils/colors";
+import { parsePix } from "../utils/parsePix";
 
 export default function ScanScreen() {
   const [permission, requestPermission] = useCameraPermissions();
@@ -11,9 +12,7 @@ export default function ScanScreen() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!permission) {
-      requestPermission();
-    }
+    if (!permission) requestPermission();
   }, [permission]);
 
   if (!permission) {
@@ -38,15 +37,29 @@ export default function ScanScreen() {
   const handleBarCodeScanned = ({ data }: { data: string }) => {
     if (scanned) return;
     setScanned(true);
-    Alert.alert("QR Code Detectado!", data, [
-      {
-        text: "OK",
-        onPress: () => {
-          setScanned(false);
-          router.push("/transaction");
+
+    try {
+      const pix = parsePix(data);
+
+      // Validação mínima
+      if (!pix.gui || !pix.gui.includes("BR.GOV.BCB.PIX")) {
+        throw new Error("QR não é Pix");
+      }
+
+      router.push({
+        pathname: "/pro/pagamento",
+        params: {
+          chave: pix.chave || "—",
+          nome: pix.nome || "—",
+          cidade: pix.cidade || "—",
+          valor: pix.valor || "0.00",
+          txid: pix.txid || "—",
         },
-      },
-    ]);
+      });
+    } catch (e) {
+      setScanned(false);
+      Alert.alert("QR inválido", "Não foi possível ler este QR Code Pix.");
+    }
   };
 
   return (
@@ -54,12 +67,12 @@ export default function ScanScreen() {
       <CameraView
         style={StyleSheet.absoluteFillObject}
         facing="back"
+        barcodeScannerSettings={{ barcodeTypes: ["qr"] }}
         onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
       />
 
       <View style={styles.overlay}>
         <Text style={styles.title}>Aponte a câmera para o QR Code</Text>
-
         <TouchableOpacity style={styles.closeBtn} onPress={() => router.back()}>
           <Ionicons name="close" size={26} color="#fff" />
         </TouchableOpacity>
@@ -81,9 +94,5 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 15,
   },
-  closeBtn: {
-    backgroundColor: colors.primary,
-    padding: 12,
-    borderRadius: 30,
-  },
+  closeBtn: { backgroundColor: colors.primary, padding: 12, borderRadius: 30 },
 });

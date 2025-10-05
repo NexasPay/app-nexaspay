@@ -27,6 +27,8 @@ export default function Layout() {
         <Stack.Screen name="transaction" />
         <Stack.Screen name="extract" />
         <Stack.Screen name="scan" />
+        <Stack.Screen name="pro/pagamento" />
+        <Stack.Screen name="pro/comprovante" />
       </Stack>
     </SafeAreaProvider>
   );
