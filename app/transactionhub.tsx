@@ -3,10 +3,12 @@ import { View, Text, StyleSheet, Pressable, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';  
 import FooterMenu from "../components/FooterMenu";
 import { colors } from 'utils/colors';
+import { useRouter } from "expo-router";
 
 const PlaceholderImage = require('../assets/logo/nexaspay_logo.png'); 
 
 const TransactionHub = () => { 
+  const router = useRouter();
   return (
     <View style={styles.screen}>
 
@@ -23,7 +25,7 @@ const TransactionHub = () => {
           <Ionicons name="logo-usd" size={30} color="#0673F6" /> 
           <Text style={styles.chooseBtnText}>Pix</Text>
         </Pressable>
-        <Pressable style={styles.chooseBtn}>
+        <Pressable style={styles.chooseBtn} onPress={()=> router.push("/transfererted1")}>
           <Ionicons name="cash" size={30} color="#0673F6" /> 
           <Text style={styles.chooseBtnText}>TED</Text>
         </Pressable>

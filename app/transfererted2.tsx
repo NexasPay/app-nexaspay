@@ -19,10 +19,9 @@ import { usePathname, useRouter } from "expo-router";
 import { navigationItems } from "../utils/navigationItems";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const PlaceholderImage = require('../assets/logo/nexaspay_logo.png');
-const GrowBar = require('../assets/growbarted1.png');
+const GrowBar2 = require('../assets/growbar002.png');
 
-export default function Transferted1() {
+export default function Transferted2() {
   const insets = useSafeAreaInsets();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -57,13 +56,13 @@ export default function Transferted1() {
       <ScrollView contentContainerStyle={{}}>
         <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
           <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 40, padding: 30 }}>Transferência TED</Text>
-          <Image source={GrowBar} style={{ marginBottom: 30 }} />
+          <Image source={GrowBar2} style={{ marginBottom: 30 }} />
         </View>
 
         <View style={{ flex: 1, justifyContent: 'flex-start', width: '100%' }}>
-          <Text style={{ color: '#fff', marginBottom: 5, fontWeight: 'bold', fontSize: 18 }}>Detalhes do remetente</Text>
+          <Text style={{ color: '#fff', marginBottom: 5, fontWeight: 'bold', fontSize: 18 }}>Detalhes do pagamento</Text>
           <TextInput
-            placeholder="Digite o CPF"
+            placeholder="Escolha sua Carteira"
             placeholderTextColor="#dbdbdb"
             style={{
               backgroundColor: colors.bgDark1,
@@ -74,7 +73,7 @@ export default function Transferted1() {
             }}
           />
           <TextInput
-            placeholder="Digite a ID da conta"
+            placeholder="Valor da transferência"
             placeholderTextColor="#dbdbdb"
             keyboardType="numeric"
             style={{
@@ -85,20 +84,7 @@ export default function Transferted1() {
               marginBottom: 15,
             }}
           />
-          <TextInput
-            placeholder="Digite a agência"
-            placeholderTextColor="#dbdbdb"
-            keyboardType="numeric"
-            style={{
-              backgroundColor: colors.bgDark1,
-              padding: 15,
-              borderRadius: 10,
-              color: '#fff',
-              marginBottom: 20,
-            }}
-          />
-
-          <Link href="/transfererted2" asChild>
+          <Link href="/pro/comprovante2" asChild>
             <TouchableOpacity
               style={{
                 backgroundColor: colors.primary,
@@ -107,10 +93,10 @@ export default function Transferted1() {
                 alignItems: 'center',
               }}
             >
-              <Text style={{ color: '#fff', fontWeight: 'bold' }}>Continuar</Text>
+              <Text style={{ color: '#fff', fontWeight: 'bold' }}>Confirmar Pagamento</Text>
             </TouchableOpacity>
           </Link>
-          <Link href="/home" asChild>
+          <Link href="/transfererted1" asChild>
             <TouchableOpacity
               style={{
                 backgroundColor: 'transparent',
@@ -122,7 +108,7 @@ export default function Transferted1() {
                 alignItems: 'center',
               }}
             >
-              <Text style={{ color: colors.primary, fontWeight: 'bold' }}>Voltar a Transferências</Text>
+              <Text style={{ color: colors.primary, fontWeight: 'bold' }}>Voltar</Text>
             </TouchableOpacity>
           </Link>
         </View>

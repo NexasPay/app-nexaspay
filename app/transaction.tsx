@@ -13,6 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../utils/colors";
 import FooterMenu from "../components/FooterMenu";
 import transactionsicon from "../assets/icons/transaction-icon.png";
+import { useRouter } from "expo-router";
 
 const contacts = [
   { id: 1, name: "João Silva", img: require("../assets/perfil-images/kina-image.png") },
@@ -25,6 +26,7 @@ const contacts = [
 export default function Transacoes() {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [selectedContact, setSelectedContact] = useState<string | null>(null);
+  const router = useRouter();
 
   const pick = (name: string) => {
     setSelectedContact(name);
@@ -41,7 +43,7 @@ export default function Transacoes() {
         </View>
 
         {/* Ações */}
-        <Pressable style={styles.actionBtn}>
+        <Pressable style={styles.actionBtn} onPress={()=> router.push("/transactionhub")}>
           <Text style={styles.actionText}>Realizar Pagamento</Text>
           <Ionicons name="chevron-forward" size={18} color="#4DA6FF" />
         </Pressable>
