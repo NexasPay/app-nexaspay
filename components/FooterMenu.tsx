@@ -64,9 +64,9 @@ export default function FooterMenu({ active = "home" }: FooterMenuProps) {
     <View style={[styles.wrap, { paddingBottom: bottomPad }]}>
       <View style={styles.container}>
         <Item label="Home" image={homeicon} route="/home" />
-        <Item label="Carteiras" image={walltericon} route="/home" />
+        <Item label="Carteiras" image={walltericon} route="/carteiras" />
         {/* 👇 botão central atualizado */}
-        <Item image={search} isActive={active === "carteiras"} route="/scan" />
+        <Item image={search} isActive={active === "carteiras"} route="/wcarteiras" />
         <Item label="Nexas AI" image={nexasia} route="/nexasai" />
         <Item label="Opções" image={optionsicon} route="/opcoes" />
       </View>
